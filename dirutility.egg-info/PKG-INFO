@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: dirutility
+Version: 0.1.1
+Summary: Utility functions for reading directory contents and refactoring folder structure
+Home-page: https://github.com/mrstephenneal/dirutility
+Author: Stephen Neal
+Author-email: stephen@stephenneal.net
+License: MIT License
+Description: Utility functions for reading directory contents and refactoring folder structure
+Platform: UNKNOWN
