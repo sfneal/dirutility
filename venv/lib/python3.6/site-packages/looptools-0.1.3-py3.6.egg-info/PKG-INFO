@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: looptools
+Version: 0.1.3
+Summary: Helper utility functions for logging output, timing processes and counting iterations.
+Home-page: https://github.com/mrstephenneal/looptools
+Author: Stephen Neal
+Author-email: stephen@stephenneal.net
+License: MIT Licence
+Description: UNKNOWN
+Platform: UNKNOWN
