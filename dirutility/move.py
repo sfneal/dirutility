@@ -2,7 +2,7 @@ import os
 import shutil
 from tqdm import tqdm
 from pathlib import Path
-from dirutility.walk import DirectoryPaths
+from dirutility.walk import DirPaths
 
 
 class FlattenTree:
@@ -34,7 +34,7 @@ class FlattenTree:
 
     def flatten(self):
         for dirs in tqdm(self.root_paths, desc='Flattening file tree', total=len(self.root_paths)):
-            files = DirectoryPaths(dirs).walk
+            files = DirPaths(dirs).walk
             for f in files:
                 if self.target == 'directory':
                     shutil.move(f, dirs)
@@ -56,7 +56,7 @@ class CreateTree:
     """
 
     def __init__(self, root, delimiter="_", prefix=None, suffix=None):
-        self.files = DirectoryPaths(root).files
+        self.files = DirPaths(root).files
         self.delimiter = delimiter
         self.prefix = prefix
         self.suffix = suffix

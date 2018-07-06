@@ -5,7 +5,7 @@ from functools import reduce
 from looptools import Counter
 
 
-class DirectoryPaths:
+class DirPaths:
     def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
                  console_output=False):
         """
@@ -42,9 +42,10 @@ class DirectoryPaths:
                               for inc in self.to_include
                               if inc in os.path.basename(Path(path))]
         if self.to_exclude:
-            self.filepaths = [path for path in self.filepaths
-                              for ex in self.to_exclude
-                              if ex not in os.path.basename(Path(path))]
+            excludes = [path for path in self.filepaths
+                        for ex in self.to_exclude
+                        if ex in os.path.basename(Path(path))]
+            self.filepaths = list(set(self.filepaths).difference(set(excludes)))
         if self.full_paths:
             self.filepaths = [Path(files).absolute() for files in self.filepaths]
         self._printer("\t" + str(len(self.filepaths)) + " file paths have passed filter checks.")
@@ -90,7 +91,7 @@ class DirectoryPaths:
         return self._get_filepaths()
 
 
-class DirectoryTree:
+class DirTree:
     def __init__(self, directory, branches=None):
         """
         Creates a nested dictionary that represents the folder structure of rootdir

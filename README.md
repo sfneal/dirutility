@@ -2,6 +2,8 @@
 
 dirutility is a Python package for generating an inventory of files within a directory tree.
 
+_Often we encounter directories with vast file structures too large to sort through by manually.  Directory Utilities
+allows users to create inventories of files and manipulated data structures._
 
 
 ### How it works
@@ -43,15 +45,17 @@ or
 pip install git+https://github.com/mrstephenneal/dirutility.git
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+## Running Tests
 
-## Running the tests
+Example use of the dirutility Python package
 
-Explain how to run the automated tests for this system
+### DirPaths class usage
 
-### Break down into end to end tests
-
-Explain what these tests test and why
+![DirPaths.Walk](https://www.dropbox.com/s/n4qafqesfsvi8pp/basic.gif?dl=0)
+Generate list of all file paths within a directory.
+Generate file paths list with filters specifying what files to include (not limited to file types, can be any string).
+Generate file paths list and exclude particular files.
+Generate file paths list with concatenated full paths.
 
 ```
 Give an example
