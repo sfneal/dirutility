@@ -51,7 +51,7 @@ Example use of the dirutility Python package
 
 ### DirPaths class usage
 
-<img src="https://i.imgur.com/Ur7dGOC.gif" height="600" />
+<img src="https://i.imgur.com/Ur7dGOC.gif" width="500" />
 Generate list of all file paths within a directory.
 
 Generate file paths list with filters specifying what files to include (not limited to file types, can be any string).
