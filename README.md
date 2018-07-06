@@ -51,7 +51,8 @@ Example use of the dirutility Python package
 
 ### DirPaths class usage
 
-![DirPaths.Walk](https://i.imgur.com/vmNpwPT.gif)
+![DirPaths.Walk](https://i.imgur.com/Ur7dGOC.gif)
+<img src="https://i.imgur.com/Ur7dGOC.gif" width="40" height="40" />
 
 Generate list of all file paths within a directory.
 Generate file paths list with filters specifying what files to include (not limited to file types, can be any string).
