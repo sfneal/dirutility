@@ -52,7 +52,7 @@ Example use of the dirutility Python package
 ### DirPaths class usage
 
 ![DirPaths.Walk](https://i.imgur.com/ToqIQ9f.gifv)
-![Imgur](https://i.imgur.com/ToqIQ9f.gifv)
+![Imgur](https://i.imgur.com/ToqIQ9f.gif)
 [Imgur](https://i.imgur.com/ToqIQ9f.gifv)
 
 Generate list of all file paths within a directory.
