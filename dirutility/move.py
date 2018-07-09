@@ -34,7 +34,7 @@ class FlattenTree:
 
     def flatten(self):
         for dirs in tqdm(self.root_paths, desc='Flattening file tree', total=len(self.root_paths)):
-            files = DirPaths(dirs).walk
+            files = DirPaths(dirs)
             for f in files:
                 if self.target == 'directory':
                     shutil.move(f, dirs)
@@ -56,7 +56,7 @@ class CreateTree:
     """
 
     def __init__(self, root, delimiter="_", prefix=None, suffix=None):
-        self.files = DirPaths(root).files
+        self.files = DirPaths(root, only_files=True)
         self.delimiter = delimiter
         self.prefix = prefix
         self.suffix = suffix

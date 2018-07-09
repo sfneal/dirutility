@@ -39,6 +39,9 @@ class DirPaths:
     def __iter__(self):
         return iter(self.filepaths)
 
+    def __str__(self):
+        return str(self.filepaths)
+
     def _printer(self, message):
         """Prints message to console when console_output is True"""
         if self.console_output:
@@ -56,7 +59,7 @@ class DirPaths:
                         if ex in os.path.basename(Path(path))]
             self.filepaths = list(set(self.filepaths).difference(set(excludes)))
         if self.full_paths:
-            self.filepaths = [Path(files).absolute() for files in self.filepaths]
+            self.filepaths = [os.path.join(self.directory, files) for files in self.filepaths]
         self._printer("\t" + str(len(self.filepaths)) + " file paths have passed filter checks.")
         return self.filepaths
 
@@ -68,13 +71,13 @@ class DirPaths:
         """
         count = Counter()
         for root, directories, files in os.walk(self.directory, topdown=self.topdown):
+            root = root[len(str(self.directory))+1:]
             for filename in files:
                 if not filename.startswith('.'):
                     # Join the two strings in order to form the full filepath.
                     self.filepaths.append(os.path.join(root, filename))
                     count.up
         self._printer("\t" + str(count.total) + " file paths have been parsed.")
-        print('Walk has been called')
         return self._get_filepaths()
 
     def files(self):
@@ -85,7 +88,6 @@ class DirPaths:
             if os.path.isfile(os.path.join(self.directory, path)):
                 if not path.startswith('.'):
                     self.filepaths.append(path)
-        print('Files has been called')
         return self._get_filepaths()
 
     def folders(self):
@@ -96,7 +98,6 @@ class DirPaths:
             if os.path.isdir(os.path.join(self.directory, path)):
                 if not path.startswith('.'):
                     self.filepaths.append(path)
-        print('Folders has been called')
         return self._get_filepaths()
 
 
