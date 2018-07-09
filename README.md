@@ -46,11 +46,18 @@ or
 pip install git+https://github.com/mrstephenneal/dirutility.git
 ```
 
-## Running Tests
+## Example Usage
 
-Example use of the dirutility Python package
+Outlined below are basic uses of the four main classes of the directory utility python package.
 
-### DirPaths class usage
+* DirPaths - Retrieve a list of paths within a root directory
+* DirTree - Retrive a nested dictionary representing a roots file structure
+* FlattenTree - Flattens the contents of a root directory by moviing all sub-folders and files to root
+* CreateTree - Create organized file structure based on indexing of files within root
+
+### DirPaths class
+
+This class generates a list of either files and or folders within a root directory.  The walk method generates a directory list of files by walking the file tree top down or bottom up.  The files and folders method generate a list of files or folders in the top level of the tree.
 
 Generate list of all file paths within a directory.
 <br><img src="https://i.imgur.com/Ur7dGOC.gif" width="500"><br>
@@ -64,21 +71,8 @@ Generate list of all file paths within a directory.
 ```python
 # Root directory
 root = '/Volumes/Storage/test'
-include = ['.psd', '.png']  # Optional parameter
-dirs = DirPaths(root, to_include=include, to_exclude=['.dwg'])
+dirs = DirPaths(root, to_include=['.psd', '.png'], to_exclude=['.dwg'])
 ```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 

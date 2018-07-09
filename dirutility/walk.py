@@ -7,7 +7,7 @@ from looptools import Counter
 
 class DirPaths:
     def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
-                 console_output=False):
+                 console_output=False, only_files=False, only_folders=False):
         """
         This class generates a list of either files and or folders within a root directory.  The walk method
         generates a directory list of files by walking the file tree top down or bottom up.  The files and folders
@@ -18,6 +18,8 @@ class DirPaths:
         :param to_include: None by default.  List of filters acceptable to find within file path string return
         :param to_exclude: None by default.  List of filters NOT acceptable to return
         :param console_output: Bool, when true console output is printed
+        :param only_files: Bool, when true only files in the root directory are returned
+        :param only_folders: Bool, when true only folders in the root directort are returned
         """
         self.directory = directory
         self.full_paths = full_paths
@@ -26,6 +28,13 @@ class DirPaths:
         self.to_exclude = to_exclude
         self.console_output = console_output
         self.filepaths = []
+
+        if only_files:
+            self.files()
+        elif only_folders:
+            self.folders()
+        else:
+            self.walk()
 
     def __iter__(self):
         return iter(self.filepaths)
@@ -51,7 +60,6 @@ class DirPaths:
         self._printer("\t" + str(len(self.filepaths)) + " file paths have passed filter checks.")
         return self.filepaths
 
-    @property
     def walk(self):
         """
         This function will generate the file names in a directory tree by walking the tree either top-down or
@@ -66,9 +74,9 @@ class DirPaths:
                     self.filepaths.append(os.path.join(root, filename))
                     count.up
         self._printer("\t" + str(count.total) + " file paths have been parsed.")
+        print('Walk has been called')
         return self._get_filepaths()
 
-    @property
     def files(self):
         """
         Return list of files in root directory
@@ -77,9 +85,9 @@ class DirPaths:
             if os.path.isfile(os.path.join(self.directory, path)):
                 if not path.startswith('.'):
                     self.filepaths.append(path)
+        print('Files has been called')
         return self._get_filepaths()
 
-    @property
     def folders(self):
         """
         Return list of folders in root directory
@@ -88,21 +96,28 @@ class DirPaths:
             if os.path.isdir(os.path.join(self.directory, path)):
                 if not path.startswith('.'):
                     self.filepaths.append(path)
+        print('Folders has been called')
         return self._get_filepaths()
 
 
 class DirTree:
-    def __init__(self, directory, branches=None):
+    def __init__(self, root, branches=None):
         """
-        Creates a nested dictionary that represents the folder structure of rootdir
+        Generate a tree dictionary of the contents of a root directory.
+        :param root: Starting directory
+        :param branches: List of function tuples used for filtering
         """
         self.dir = {}
-        self.directory = directory.rstrip(os.sep)
+        self.directory = root.rstrip(os.sep)
         self.start = self.directory.rfind(os.sep) + 1
         self.branches = branches
+        self.get()
 
     def __iter__(self):
-        return iter(self.dir)
+        return iter(self.dir.items())
+
+    def __str__(self):
+        return str(self.dir)
 
     def _filter(self, folders, folder_or_file):
         for index in range(0, len(folders)):
@@ -117,7 +132,6 @@ class DirTree:
                     return False
         return True
 
-    @property
     def get(self):
         for path, dirs, files in os.walk(self.directory):
             folders = path[self.start:].split(os.sep)
@@ -130,4 +144,4 @@ class DirTree:
                 files = dict.fromkeys(files)
                 parent = reduce(dict.get, folders[:-1], self.dir)
                 parent[folders[-1]] = files
-        return self.dir
+        return self.__iter__()
