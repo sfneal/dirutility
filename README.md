@@ -41,6 +41,7 @@ GitHub distribution
 pip install git+git://github.com/mrstephenneal/dirutility.git
 ```
 or
+
 ```
 pip install git+https://github.com/mrstephenneal/dirutility.git
 ```
@@ -54,17 +55,17 @@ Example use of the dirutility Python package
 Generate list of all file paths within a directory.
 <br><img src="https://i.imgur.com/Ur7dGOC.gif" width="500"><br>
 
-Generate file paths list with filters specifying what files to include (not limited to file types, can be any string).
-<br><img src="https://i.imgur.com/ogj9ZNQ.gif" width="500"><br>
+<a href="https://i.imgur.com/ogj9ZNQ.gif">Generate file paths list with filters specifying what files to include (not limited to file types, can be any string).<a>
 
-Generate file paths list and exclude particular files.
-<br><img src="https://i.imgur.com/dGAAdDO.gif" width="500"><br>
+<a href="https://i.imgur.com/dGAAdDO.gif">Generate file paths list and exclude particular files.<a>
 
-Generate file paths list with concatenated full paths.
-<br><img src="https://i.imgur.com/cQjrL18.gif" width="500"><br>
+<a href="https://i.imgur.com/cQjrL18.gif">Generate file paths list with concatenated full paths.<a>
 
-```
-Give an example
+```python
+# Root directory
+root = '/Volumes/Storage/test'
+include = ['.psd', '.png']  # Optional parameter
+dirs = DirPaths(root, to_include=include, to_exclude=['.dwg'])
 ```
 
 ### And coding style tests
