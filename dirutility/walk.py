@@ -108,17 +108,17 @@ class DirTree:
         :param root: Starting directory
         :param branches: List of function tuples used for filtering
         """
-        self.dir = {}
-        self.directory = root.rstrip(os.sep)
-        self.start = self.directory.rfind(os.sep) + 1
+        self.tree_dict = {}
+        self.directory = Path(root)
+        self.start = str(self.directory).rfind(os.sep) + 1
         self.branches = branches
         self.get()
 
     def __iter__(self):
-        return iter(self.dir.items())
+        return iter(self.tree_dict.items())
 
     def __str__(self):
-        return str(self.dir)
+        return str(self.tree_dict)
 
     def _filter(self, folders, folder_or_file):
         for index in range(0, len(folders)):
@@ -139,10 +139,10 @@ class DirTree:
             if self.branches:
                 if self._filter(folders, 'folders'):
                     files = dict.fromkeys(files)
-                    parent = reduce(dict.get, folders[:-1], self.dir)
+                    parent = reduce(dict.get, folders[:-1], self.tree_dict)
                     parent[folders[-1]] = files
             else:
                 files = dict.fromkeys(files)
-                parent = reduce(dict.get, folders[:-1], self.dir)
+                parent = reduce(dict.get, folders[:-1], self.tree_dict)
                 parent[folders[-1]] = files
         return self.__iter__()
