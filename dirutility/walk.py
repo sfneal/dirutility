@@ -120,6 +120,10 @@ class DirTree:
     def __str__(self):
         return str(self.tree_dict)
 
+    @property
+    def dict(self):
+        return self.tree_dict
+
     def _filter(self, folders, folder_or_file):
         for index in range(0, len(folders)):
             filters = self.branches[index][folder_or_file]
@@ -134,6 +138,10 @@ class DirTree:
         return True
 
     def get(self):
+        """
+        Generate path, dirs, files tuple for each path in directory.  Executes filters if branches are not None
+        :return:
+        """
         for path, dirs, files in os.walk(self.directory):
             folders = path[self.start:].split(os.sep)
             if self.branches:
@@ -145,4 +153,4 @@ class DirTree:
                 files = dict.fromkeys(files)
                 parent = reduce(dict.get, folders[:-1], self.tree_dict)
                 parent[folders[-1]] = files
-        return self.__iter__()
+        return self.tree_dict
