@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.1.4',
+    version='0.1.5',
     packages=find_packages(),
     install_requires=[
         'tqdm',
@@ -12,7 +12,6 @@ setup(
     license='MIT License',
     author='Stephen Neal',
     author_email='stephen@stephenneal.net',
-    description='Refactored parameters for DirectoryPaths class, added functionality to include or exclude files if '
-                'they contain or do not contain a string',
+    description='Improved cross platform performance by further implementing pathlib Path.',
     long_description='Utility functions for reading directory contents and refactoring folder structure'
 )
