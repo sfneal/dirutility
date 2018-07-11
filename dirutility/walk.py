@@ -53,10 +53,12 @@ class DirPaths:
             func = self.walk
 
         # Check if directory is a singular (1) string or if it is a list of strings (multiple)
-        if os.path.isdir(directory):
-            self.directory = [str(directory)]
-        else:
+        try:
+            if os.path.isdir(directory):
+                self.directory = [str(directory)]
+        except TypeError:
             self.directory = [str(dirs) for dirs in directory]
+
         func()  # Run declared function
 
         self._printer("\t" + str(self.__len__()) + " file paths have been parsed.")
