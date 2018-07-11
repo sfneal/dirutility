@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.1.6',
+    version='0.1.7',
     packages=find_packages(),
     install_requires=[
         'tqdm',
@@ -12,6 +12,6 @@ setup(
     license='MIT License',
     author='Stephen Neal',
     author_email='stephen@stephenneal.net',
-    description='Improved cross platform performance by further implementing pathlib Path.',
+    description='Added multiprocessing support to DirPaths class.  Speed improvements for directory walking.',
     long_description='Utility functions for reading directory contents and refactoring folder structure'
 )
