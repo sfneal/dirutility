@@ -53,9 +53,9 @@ class DirPaths:
             func = self.walk
 
         # Check if directory is a singular (1) string or if it is a list of strings (multiple)
-        if type(directory) == str:
+        if os.path.isdir(directory):
             self.directory = [directory]
-        elif type(directory) == list:
+        else:
             self.directory = directory
         func()  # Run declared function
 

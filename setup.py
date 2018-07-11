@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.1.7',
+    version='0.2.0',
     packages=find_packages(),
     install_requires=[
         'tqdm',
@@ -13,5 +13,5 @@ setup(
     author='Stephen Neal',
     author_email='stephen@stephenneal.net',
     description='Added multiprocessing support to DirPaths class.  Speed improvements for directory walking.',
-    long_description='Utility functions for reading directory contents and refactoring folder structure'
+    long_description='Utility functions for quickly reading directory contents and refactoring folder structure'
 )
