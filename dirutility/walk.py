@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from math import inf
 from multiprocessing.pool import Pool
 from multiprocessing import Manager
 from multiprocessing import cpu_count
@@ -8,9 +9,9 @@ from looptools import Counter
 
 
 class DirPaths:
-    def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None, only_files=False,
-                 only_folders=False, parallelize=True, pool_size=cpu_count(), console_output=False,
-                 console_stream=False):
+    def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
+                 min_level=0, max_level=inf, only_files=False, only_folders=False, parallelize=False,
+                 pool_size=cpu_count(), console_output=False, console_stream=False):
         """
         This class generates a list of either files and or folders within a root directory.  The walk method
         generates a directory list of files by walking the file tree top down or bottom up.  The files and folders
@@ -20,6 +21,8 @@ class DirPaths:
         :param topdown: Bool, when true walk method walks tree from the topdwon. When false tree is walked bottom up
         :param to_include: None by default.  List of filters acceptable to find within file path string return
         :param to_exclude: None by default.  List of filters NOT acceptable to return
+        :param min_level: 0 by default.  Minimum directory level to save paths from
+        :param max_level: Infinity by default.  Maximum directory level to save paths from
         :param only_files: Bool, when true only files in the root directory are returned
         :param only_folders: Bool, when true only folders in the root directort are returned
         :param parallelize: Bool, when true pool processing is enabled within walk method
@@ -31,6 +34,8 @@ class DirPaths:
         self.topdown = topdown
         self.to_include = to_include
         self.to_exclude = to_exclude
+        self.min_level = min_level
+        self.max_level = max_level
         self.console_output = console_output
         self.console_stream = console_stream
 
@@ -84,20 +89,6 @@ class DirPaths:
 
     def _get_filepaths(self):
         """Filters list of file paths to remove non-included, remove excluded files and concatenate full paths."""
-        # Is there a list of includes?
-        if self.to_include:
-            self.filepaths = [path for path in self.filepaths
-                              for inc in self.to_include
-                              if inc in os.path.basename(Path(path))]
-
-        # Is there a list of excludes?
-        if self.to_exclude:
-            excludes = [path for path in self.filepaths
-                        for ex in self.to_exclude
-                        if ex in os.path.basename(Path(path))]
-            self.filepaths = list(set(self.filepaths).difference(set(excludes)))
-
-        # Check if saving full_paths is True.
         if self.full_paths:
             self.filepaths = [os.path.join(base, path) for base, path in self.filepaths]
         else:
@@ -105,31 +96,66 @@ class DirPaths:
         self._printer("\t" + str(len(self.filepaths)) + " file paths have passed filter checks.")
         return self.filepaths
 
-    def _remaining(self):
-        return self.unsearched.qsize()
+    @staticmethod
+    def _get_level(path):
+        return len(path.split(os.sep))
 
-    def _total(self):
-        return len(self.filepaths) + self._remaining()
+    def _check_level(self, path):
+        if self.min_level <= self._get_level(path) <= self.max_level:
+            return True
+        else:
+            return False
+
+    def _apply_filters(self, path):
+        """Ryb path against filter sets and return True if all pass"""
+        # Check that current path is within level limitation
+        if not self._check_level(path):
+            return False
+
+        # Exclude hidden files and folders with '.' prefix
+        if os.path.basename(path).startswith('.'):
+            return False
+
+        # Handle exclusions
+        if self.to_exclude:
+            if any(ex in path for ex in self.to_exclude):
+                return False
+
+        # Handle inclusions
+        if self.to_include:
+            if not any(inc in path for inc in self.to_include):
+                return False
+
+        return True
+
+    def _parallel_get_root_files(self, directory):
+        """Retrive files within the root directory"""
+        if len(self.filepaths) is 0:
+            root_files = [(directory, f) for f in os.listdir(directory)
+                          if os.path.isfile(os.path.join(directory, f))
+                          and self._apply_filters(f)]
+            self.filepaths.extend(root_files)
 
     def parallel_explore_path(self, task_num, dirpath):
         """
-
+        Explore path to discover unsearched directories and save filepaths
         :param task_num: Processor ID
         :param dirpath: Tuple (base directory, path), path information pulled from unsearched Queue
         :return: Directories to add to unsearched Queue
         """
         base, path = dirpath
-        full_path = base + os.sep + path
         directories = []
         nondirectories = []
-        self._printer("Task: " + str(task_num) + " >>> Explored path: " + full_path, stream=True)
-        for filename in os.listdir(full_path):
+        self._printer("Task: " + str(task_num) + " >>> Explored path: " + path, stream=True)
+        # Loop through paths
+        for filename in os.listdir(base + os.sep + path):
             fullname = os.path.join(path, filename)
-            if not os.path.basename(fullname).startswith('.'):
-                if os.path.isdir(base + os.sep + fullname):
-                    directories.append((base, fullname))
-                else:
-                    nondirectories.append((base, fullname))
+            # Append to directories if dir
+            if os.path.isdir(base + os.sep + fullname):
+                directories.append((base, fullname))
+            # Pass filters and append to nondirectories if file
+            elif self._apply_filters(fullname):
+                nondirectories.append((base, fullname))
         self.filepaths.extend(nondirectories)
         return directories
 
@@ -141,7 +167,6 @@ class DirPaths:
         :param task_num: Processor ID
         """
         while True:
-            # print(self._total())
             base, path = self.unsearched.get()
             dirs = self.parallel_explore_path(task_num, (base, path))
             for newdir in dirs:
@@ -158,6 +183,7 @@ class DirPaths:
         self._printer('\tMultiprocess Walk')
         # Loop through directories in case there is more than one (1)
         for directory in self.directory:
+            self._parallel_get_root_files(directory)  # Add file within root directory if filepaths is empty
             # acquire the list of paths
             first_level_dirs = next(os.walk(directory))[1]
             for path in first_level_dirs:
@@ -179,12 +205,12 @@ class DirPaths:
         for directory in self.directory:
             for root, directories, files in os.walk(directory, topdown=self.topdown):
                 root = root[len(str(directory)) + 1:]
+                self._printer(str(count.up) + ": Explored path - " + str(root), stream=True)
                 for filename in files:
-                    if not filename.startswith('.'):
+                    fullname = os.path.join(root, filename)
+                    if self._apply_filters(fullname):
                         # Join the two strings in order to form the full filepath.
-                        self.filepaths.append((directory, os.path.join(root, filename)))
-                        self._printer(str(count.up) + ": Explored path - " + str(os.path.join(root, filename)),
-                                      stream=True)
+                        self.filepaths.append((directory, fullname))
 
     def walk(self):
         """
