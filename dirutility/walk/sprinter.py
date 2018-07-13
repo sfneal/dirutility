@@ -54,7 +54,7 @@ class Sprinter:
             else:
                 root_files = [(directory, f) for f in os.listdir(directory)
                               if os.path.isfile(os.path.join(directory, f))]
-            self.filepaths.extend(root_files)
+            self.add_path(root_files)
 
     def explore_path_filter(self, task_num, dirpath):
         """
