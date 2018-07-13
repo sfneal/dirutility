@@ -31,7 +31,7 @@ class PathFilters:
                 if 'include' in self.filters[i]:
                     inclusion = 0
                     for inc in self.filters[i]['include']:
-                        if inc.lower() in path_list[i].lower():
+                        if str(inc).lower() in path_list[i].lower():
                             inclusion = 1
                     if inclusion != 1:
                         return False
