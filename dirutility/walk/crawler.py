@@ -50,13 +50,10 @@ class Crawler:
             for root, directories, files in os.walk(directory, topdown=self.topdown):
                 root = root[len(str(directory)) + 1:]
                 self._printer(str(count.up) + ": Explored path - " + str(root), stream=True)
-                if self.filters.non_empty_folders:
-                    self.add_path(directory, root)
-                else:
-                    for filename in files:
-                        fullname = os.path.join(root, filename)
-                        # Join the two strings in order to form the full filepath.
-                        self.add_path(directory, fullname)
+                for filename in files:
+                    fullname = os.path.join(root, filename)
+                    # Join the two strings in order to form the full filepath.
+                    self.add_path(directory, fullname)
 
     def filter(self):
         """
