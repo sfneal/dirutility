@@ -11,16 +11,20 @@ class Sprinter:
         self._printer = _printer
 
         if self.filters:
+            self._printer('Filtering enabled')
             self.explore_path = self.explore_path_filter
         else:
+            self._printer('Filtering disabled')
             self.explore_path = self.explore_path_encompass
 
         self.filepaths = Manager().list()
         self.unsearched = Manager().Queue()
 
         if full_paths:
+            self._printer('Absolute paths')
             self.add_path = self._add_filepath_absolute
         else:
+            self._printer('Relative paths')
             self.add_path = self._add_filepath_relative
 
         self.sprinter()
@@ -45,7 +49,8 @@ class Sprinter:
             if self.filters:
                 root_files = [(directory, f) for f in os.listdir(directory)
                               if os.path.isfile(os.path.join(directory, f))
-                              and self.filters.validate(f)]
+                              and self.filters.validate(f)
+                              and self.filters.get_level(f) == self.filters.max_level]
             else:
                 root_files = [(directory, f) for f in os.listdir(directory)
                               if os.path.isfile(os.path.join(directory, f))]
@@ -67,7 +72,7 @@ class Sprinter:
             for filename in os.listdir(base + os.sep + path):
                 fullname = os.path.join(path, filename)
                 if self.filters.validate(fullname):
-                    if self.filters.non_empty_folders:
+                    if self.filters.non_empty_folders and self.filters.get_level(fullname) == self.filters.max_level:
                         if os.path.isdir(base + os.sep + fullname):
                             nondirectories.append((base, fullname))
                     else:
@@ -124,7 +129,7 @@ class Sprinter:
         continuously exploring directories in the Queue until Queue is emptied.
         Significantly faster than crawler method for larger directory trees.
         """
-        self._printer('\tMultiprocess Walk')
+        self._printer('Multiprocess Walk')
         # Loop through directories in case there is more than one (1)
         for directory in self.directory:
             self._get_root_files(directory)  # Add file within root directory if filepaths is empty
@@ -132,7 +137,9 @@ class Sprinter:
             first_level_dirs = next(os.walk(directory))[1]
             for path in first_level_dirs:
                 self.unsearched.put((directory, path))
+        self._printer('Pool Processing STARTED')
         pool = Pool(self.pool_size)
         pool.map_async(self.parallel_worker, range(self.pool_size))
         pool.close()
         self.unsearched.join()
+        self._printer('Pool Processing ENDED')

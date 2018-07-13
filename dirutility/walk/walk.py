@@ -16,10 +16,10 @@ class Printer:
     def printer(self, message, stream=False):
         if not stream:
             if self.console_output:
-                print(message)
+                print('\t' + message)
         else:
             if self.console_stream:
-                print(message)
+                print('\t' + message)
 
 
 class DirPaths:
@@ -82,7 +82,7 @@ class DirPaths:
 
         func()  # Run declared function
 
-        self._printer("\t" + str(self.__len__()) + " file paths have been parsed.")
+        self._printer(str(self.__len__()) + " file paths have been parsed.")
         self._get_filepaths()  # Return filepaths
 
     def __iter__(self):
@@ -96,7 +96,7 @@ class DirPaths:
 
     def _get_filepaths(self):
         """Filters list of file paths to remove non-included, remove excluded files and concatenate full paths."""
-        self._printer("\t" + str(len(self.filepaths)) + " file paths have passed filter checks.")
+        self._printer(str(len(self.filepaths)) + " file paths have passed filter checks.")
         return self.filepaths
 
     def walk(self):

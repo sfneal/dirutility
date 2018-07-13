@@ -13,12 +13,16 @@ class Crawler:
 
         if full_paths:
             self.add_path = self._add_filepath_absolute
+            self._printer('Absolute paths')
         else:
             self.add_path = self._add_filepath_relative
+            self._printer('Relative paths')
 
         if self.filters:
+            self._printer('Filtering enabled')
             self.filter()
         else:
+            self._printer('Filtering disabled')
             self.encompass()
 
     def __iter__(self):
@@ -40,7 +44,7 @@ class Crawler:
         bottom-up. For each directory in the tree rooted at directory top (including top itself), it yields a 3-tuple
         (dirpath, dirnames, filenames).
         """
-        self._printer('\tStandard Walk')
+        self._printer('Standard Walk')
         count = Counter(length=3)
         for directory in self.directory:
             for root, directories, files in os.walk(directory, topdown=self.topdown):
@@ -61,9 +65,10 @@ class Crawler:
         bottom-up. For each directory in the tree rooted at directory top (including top itself), it yields a 3-tuple
         (dirpath, dirnames, filenames).
         """
-        self._printer('\tStandard Walk')
+        self._printer('Standard Walk')
         count = Counter(length=3)
         for directory in self.directory:
+            self._printer('Searching ' + directory)
             for root, directories, files in os.walk(directory, topdown=self.topdown):
                 root = root[len(str(directory)) + 1:]
                 if self.filters.validate(root):
