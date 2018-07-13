@@ -56,6 +56,7 @@ class DirPaths:
         self.console_output = console_output
         self.console_stream = console_stream
         self._printer = Printer(console_output, console_stream).printer
+        self._printer('DIRPATHS')
 
         # Check that parallelization is enabled
         if parallelize:
