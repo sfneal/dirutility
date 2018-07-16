@@ -87,7 +87,7 @@ class DirPaths:
         self._get_filepaths()  # Return filepaths
 
     def __iter__(self):
-        return iter(self.filepaths)
+        return iter(list(self.filepaths))
 
     def __str__(self):
         return str(self.filepaths)
