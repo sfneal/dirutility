@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.2.8',
+    version='0.2.9',
     packages=find_packages(),
     install_requires=[
         'tqdm',
@@ -12,6 +12,6 @@ setup(
     license='MIT License',
     author='Stephen Neal',
     author_email='stephen@stephenneal.net',
-    description='Fixed a bug where empty folders are saved to paths_list when non_empty_folders is set to True.',
+    description='Fixed a bug where filters were being applied without encoding strings to lowercase.',
     long_description='Utility functions for quickly reading directory contents and refactoring folder structure'
 )

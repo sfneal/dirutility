@@ -37,6 +37,15 @@ class PathFilters:
                         return False
         return True
 
+    def validate_non_empty_folder(self, base, fullname):
+        # Check that path is a directory
+        if os.path.isdir(base + os.sep + fullname):
+            # Check that path is not empty
+            if os.listdir(base + os.sep + fullname):
+                # Check that path level is equal to max_level
+                if self.filters.get_level(fullname) == self.filters.max_level:
+                    return True
+
     def validate(self, path):
         """Run path against filter sets and return True if all pass"""
         # Exclude hidden files and folders with '.' prefix
@@ -53,12 +62,12 @@ class PathFilters:
 
         # Handle exclusions
         if self.to_exclude:
-            if any(ex in path for ex in self.to_exclude):
+            if any(ex.lower() in path.lower() for ex in self.to_exclude):
                 return False
 
         # Handle inclusions
         if self.to_include:
-            if not any(inc in path for inc in self.to_include):
+            if not any(inc.lower() in path.lower() for inc in self.to_include):
                 return False
 
         return True

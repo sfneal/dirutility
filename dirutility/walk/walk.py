@@ -25,7 +25,7 @@ class Printer:
 class DirPaths:
     def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
                  min_level=0, max_level=inf, filters=None, non_empty_folders=False, only_files=False,
-                 only_folders=False, parallelize=False, pool_size=cpu_count(), console_output=False,
+                 only_folders=False, parallelize=False, pool_size=cpu_count(), console_output=True,
                  console_stream=False):
         """
         This class generates a list of either files and or folders within a root directory.  The walk method
