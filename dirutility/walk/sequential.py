@@ -68,10 +68,11 @@ class Crawler:
             self._printer('Searching ' + directory)
             for root, directories, files in os.walk(directory, topdown=self.topdown):
                 root = root[len(str(directory)) + 1:]
+                self._printer(str(count.up) + ": Explored path - " + str(root), stream=True)
                 if self.filters.validate(root):
-                    self._printer(str(count.up) + ": Explored path - " + str(root), stream=True)
                     if self.filters.non_empty_folders and self.filters.get_level(root) == self.filters.max_level:
-                        self.add_path(directory, root)
+                        if os.path.isdir(directory + os.sep + root) and os.listdir(directory + os.sep + root):
+                            self.add_path(directory, root)
                     else:
                         for filename in files:
                             fullname = os.path.join(root, filename)

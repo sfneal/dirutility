@@ -4,8 +4,8 @@ from math import inf
 from multiprocessing import cpu_count
 from functools import reduce
 from dirutility.walk.filter import PathFilters
-from dirutility.walk.sprinter import Sprinter
-from dirutility.walk.crawler import Crawler
+from dirutility.walk.multiprocess import Sprinter
+from dirutility.walk.sequential import Crawler
 
 
 class Printer:

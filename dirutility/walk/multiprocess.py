@@ -73,7 +73,7 @@ class Sprinter:
                 fullname = os.path.join(path, filename)
                 if self.filters.validate(fullname):
                     if self.filters.non_empty_folders and self.filters.get_level(fullname) == self.filters.max_level:
-                        if os.path.isdir(base + os.sep + fullname):
+                        if os.path.isdir(base + os.sep + fullname) and os.listdir(base + os.sep + fullname):
                             nondirectories.append((base, fullname))
                     else:
                         # Append to directories if dir
