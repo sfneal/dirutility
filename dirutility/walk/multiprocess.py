@@ -28,8 +28,6 @@ class Sprinter:
             self._printer('Relative paths')
             self.add_path = self._add_filepath_relative
 
-        self.sprinter()
-
     def __iter__(self):
         return iter(self.filepaths)
 
