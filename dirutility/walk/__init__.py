@@ -1,3 +1,3 @@
-__all__ = ['DirPaths', 'DirTree']
+__all__ = ['DirPaths', 'DirTree', 'gui']
 
-from dirutility.walk.walk import DirPaths, DirTree
+from dirutility.walk.walk import DirPaths, DirTree, gui
