@@ -56,7 +56,7 @@ class CreateTree:
     """
 
     def __init__(self, root, delimiter="_", prefix=None, suffix=None):
-        self.files = DirPaths(root, only_files=True)
+        self.files = DirPaths(root).files()
         self.delimiter = delimiter
         self.prefix = prefix
         self.suffix = suffix

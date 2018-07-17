@@ -7,6 +7,7 @@ setup(
     install_requires=[
         'tqdm',
         'looptools',
+        'databasetools',
     ],
     url='https://github.com/mrstephenneal/dirutility',
     license='MIT License',

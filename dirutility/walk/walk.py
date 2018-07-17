@@ -63,10 +63,8 @@ class DirPaths:
 
         # Check that parallelization is enabled
         if parallelize:
-            self.parallelize = True
             self.pool_size = pool_size
-        else:
-            self.parallelize = False
+        self.parallelize = parallelize
         self.filepaths = []
 
         # Check if directory is a singular (1) string or if it is a list of strings (multiple)
@@ -74,14 +72,6 @@ class DirPaths:
             self.directory = [str(directory)]
         except TypeError:
             self.directory = [str(dirs) for dirs in directory]
-
-        # Check if files only or folders only params have been set
-        if only_files and not only_folders:
-            func = self.files
-        elif only_folders and not only_files:
-            func = self.folders
-        else:
-            func = self.walk
 
     def __iter__(self):
         return iter(list(self.filepaths))
@@ -119,6 +109,7 @@ class DirPaths:
                 if os.path.isfile(os.path.join(directory, path)):
                     if not path.startswith('.'):
                         self.filepaths.append((directory, path))
+        return self._get_filepaths()
 
     def folders(self):
         """
@@ -129,6 +120,7 @@ class DirPaths:
                 if os.path.isdir(os.path.join(directory, path)):
                     if not path.startswith('.'):
                         self.filepaths.append((directory, path))
+        return self._get_filepaths()
 
 
 class DirTree:
