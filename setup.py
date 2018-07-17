@@ -2,14 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.2.17',
+    version='0.2.18',
     packages=find_packages(),
     install_requires=[
         'tqdm',
         'looptools',
         'databasetools',
         'PySimpleGUI',
-        'tkinter'
     ],
     url='https://github.com/mrstephenneal/dirutility',
     license='MIT License',
