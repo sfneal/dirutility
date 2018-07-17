@@ -6,10 +6,12 @@ from functools import reduce
 from dirutility.walk.filter import PathFilters
 from dirutility.walk.multiprocess import Sprinter
 from dirutility.walk.sequential import Crawler
+from looptools import Timer
 
 
 class Printer:
     def __init__(self, console_output, console_stream):
+        """Printer function initialized with classes. Used for optional printing"""
         self.console_output = console_output
         self.console_stream = console_stream
 
@@ -45,6 +47,7 @@ class DirPaths:
         :param console_output: Bool, when true console output is printed
         :param console_stream: Bool, when true loops print live results
         """
+        self.timer = Timer
         self.full_paths = full_paths
         self.topdown = topdown
 
@@ -68,8 +71,7 @@ class DirPaths:
 
         # Check if directory is a singular (1) string or if it is a list of strings (multiple)
         try:
-            if os.path.isdir(directory):
-                self.directory = [str(directory)]
+            self.directory = [str(directory)]
         except TypeError:
             self.directory = [str(dirs) for dirs in directory]
 
@@ -80,11 +82,6 @@ class DirPaths:
             func = self.folders
         else:
             func = self.walk
-
-        func()  # Run declared function
-
-        self._printer(str(self.__len__()) + " file paths have been parsed.")
-        self._get_filepaths()  # Return filepaths
 
     def __iter__(self):
         return iter(list(self.filepaths))
@@ -97,7 +94,7 @@ class DirPaths:
 
     def _get_filepaths(self):
         """Filters list of file paths to remove non-included, remove excluded files and concatenate full paths."""
-        self._printer(str(len(self.filepaths)) + " file paths have passed filter checks.")
+        self._printer(str(self.__len__()) + " file paths have been parsed in ." + str(self.timer.end))
         return self.filepaths
 
     def walk(self):
@@ -107,9 +104,10 @@ class DirPaths:
         crawler() - Generates file path list using os.walk() in sequence
         """
         if self.parallelize:
-            self.filepaths = Sprinter(self.directory, self.filters, self.full_paths, self.pool_size, self._printer)
+            self.filepaths = Sprinter(self.directory, self.filters, self.full_paths, self.pool_size, self._printer).sprinter()
         else:
-            self.filepaths = Crawler(self.directory, self.filters, self.full_paths, self.topdown, self._printer)
+            self.filepaths = Crawler(self.directory, self.filters, self.full_paths, self.topdown, self._printer).crawler()
+        return self._get_filepaths()
 
     def files(self):
         """
@@ -186,3 +184,23 @@ class DirTree:
                 parent = reduce(dict.get, folders[:-1], self.tree_dict)
                 parent[folders[-1]] = files
         return self.tree_dict
+
+
+if __name__ == "__main__":
+    from dirutility.gui import WalkGUI
+    gui = WalkGUI('DirPaths')
+    params = gui.parsing()
+    parse = params['parse']
+
+    paths = DirPaths(parse['directory'], console_stream=parse['console_stream'], parallelize=parse['parallelize'],
+                     max_level=parse['max_level'], non_empty_folders=parse['non_empty_folders']).walk()
+
+    if params['save']:
+        from databasetools import CSVExport, DictTools
+        save = params['save']
+        if save['csv']:
+            CSVExport(list(paths), cols=['files'], file_path=save['directory'], file_name=os.path.basename(parse[
+                                                                                                         'directory']))
+        if save['json']:
+            DictTools(save['directory'], os.path.basename(parse['directory'])).save(list(paths))
+    print('Done!')

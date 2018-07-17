@@ -4,6 +4,7 @@ from looptools import Counter
 
 class Crawler:
     def __init__(self, directory, filters, full_paths, topown, _printer):
+        """Sub class of DirPaths used for sequential directory parsing"""
         self.directory = directory
         self.filters = filters
         self.topdown = topown
@@ -18,13 +19,6 @@ class Crawler:
             self.add_path = self._add_filepath_relative
             self._printer('Relative paths')
 
-        if self.filters:
-            self._printer('Filtering enabled')
-            self.filter()
-        else:
-            self._printer('Filtering disabled')
-            self.encompass()
-
     def __iter__(self):
         return iter(self.filepaths)
 
@@ -36,6 +30,15 @@ class Crawler:
 
     def _add_filepath_absolute(self, directory, fullname):
         self.filepaths.append(os.path.join(directory, fullname))
+
+    def crawler(self):
+        if self.filters:
+            self._printer('Filtering enabled')
+            self.filter()
+        else:
+            self._printer('Filtering disabled')
+            self.encompass()
+        return self.filepaths
 
     def encompass(self):
         """

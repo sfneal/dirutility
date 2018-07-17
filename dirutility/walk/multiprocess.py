@@ -5,6 +5,7 @@ from multiprocessing import Manager
 
 class Sprinter:
     def __init__(self, directory, filters, full_paths, pool_size, _printer):
+        """DirPaths sub class for directory parsing using parallel processing."""
         self.directory = directory
         self.filters = filters
         self.pool_size = pool_size
@@ -143,3 +144,4 @@ class Sprinter:
         pool.close()
         self.unsearched.join()
         self._printer('Pool Processing ENDED')
+        return self.filepaths
