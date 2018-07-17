@@ -26,8 +26,7 @@ class Printer:
 
 class DirPaths:
     def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
-                 min_level=0, max_level=inf, filters=None, non_empty_folders=False, only_files=False,
-                 only_folders=False, parallelize=False, pool_size=cpu_count(), console_output=True,
+                 min_level=0, max_level=inf, filters=None, non_empty_folders=False, parallelize=False, pool_size=cpu_count(), console_output=True,
                  console_stream=False):
         """
         This class generates a list of either files and or folders within a root directory.  The walk method
@@ -47,7 +46,7 @@ class DirPaths:
         :param console_output: Bool, when true console output is printed
         :param console_stream: Bool, when true loops print live results
         """
-        self.timer = Timer
+        self.timer = Timer()
         self.full_paths = full_paths
         self.topdown = topdown
 
@@ -84,7 +83,7 @@ class DirPaths:
 
     def _get_filepaths(self):
         """Filters list of file paths to remove non-included, remove excluded files and concatenate full paths."""
-        self._printer(str(self.__len__()) + " file paths have been parsed in ." + str(self.timer.end))
+        self._printer(str(self.__len__()) + " file paths have been parsed in " + str(self.timer.end))
         return self.filepaths
 
     def walk(self):
