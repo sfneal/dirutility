@@ -178,7 +178,7 @@ class DirTree:
         return self.tree_dict
 
 
-if __name__ == "__main__":
+def gui():
     from dirutility.gui import WalkGUI
     gui = WalkGUI('DirPaths')
     params = gui.parsing()
@@ -192,7 +192,11 @@ if __name__ == "__main__":
         save = params['save']
         if save['csv']:
             CSVExport(list(paths), cols=['files'], file_path=save['directory'], file_name=os.path.basename(parse[
-                                                                                                         'directory']))
+                                                                                                               'directory']))
         if save['json']:
             DictTools(save['directory'], os.path.basename(parse['directory'])).save(list(paths))
     print('Done!')
+
+
+if __name__ == "__main__":
+    gui()
