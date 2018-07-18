@@ -179,7 +179,7 @@ class DirTree:
 
 def gui():
     from dirutility.gui import WalkGUI
-    gui = WalkGUI('DirPaths')
+    gui = WalkGUI()
     params = gui.parsing()
     parse = params['parse']
 
