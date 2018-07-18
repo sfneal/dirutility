@@ -136,3 +136,68 @@ class BackupZipGUI:
 
         print(values)
         return values[0]
+
+
+class CompareTreesGUI:
+    def __init__(self):
+        self.title = 'CompareTrees'
+        self.params = {}
+
+    def _saving(self):
+        with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
+            layout = [
+                [gui.Text('Results Saving Settings', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
+                # Source
+                [gui.Text('Destination Folder', size=(15, 1), auto_size_text=False), gui.InputText(desktop()),
+                 gui.FolderBrowse()],
+
+                # File types
+                [gui.Text('Select file types you would like to save output to.')],
+                [gui.Checkbox('CSV', default=True), gui.Checkbox('JSON')],
+                [_line()],
+
+                # Save results to file
+                [gui.Submit(), gui.Cancel()]]
+
+            (button, (values)) = form.LayoutAndShow(layout)
+
+        self.params['save'] = {
+            'directory': values[0],
+            'csv': values[1],
+            'json': values[2],
+        }
+        return self.params
+
+    @property
+    def sources(self):
+        with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
+            layout = [
+                [gui.Text('Compare Trees utility', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
+
+                # Source 1
+                [gui.Text('Select source #1 folder', size=(15, 1), auto_size_text=False),
+                 gui.InputText('Source'),
+                 gui.FolderBrowse()],
+
+                # Source 2
+                [gui.Text('Select source #2 folder', size=(15, 1), auto_size_text=False),
+                 gui.InputText('Source'),
+                 gui.FolderBrowse()],
+
+                # Save results to file
+                [gui.Checkbox('Save Results to File', default=False)],
+
+                [gui.Submit(), gui.Cancel()]]
+
+            (button, (values)) = form.LayoutAndShow(layout)
+
+        print(values)
+        self.params['source'] = {
+            'dir1': values[0],
+            'dir2': values[1],
+            'save_file': values[2],
+        }
+
+        if self.params['source']['save_file']:
+            self._saving()
+        return self.params

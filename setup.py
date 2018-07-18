@@ -14,7 +14,6 @@ setup(
     license='MIT License',
     author='Stephen Neal',
     author_email='stephen@stephenneal.net',
-    description='Added ZipBackup class to backup.py module.  The class creates a zip file backup of a source folder '
-                'and generates an auto-incrementing filename.',
+    description='Add compare module and GUI to parse two directories and return lists of unique files.',
     long_description='Utility functions for quickly reading directory contents and refactoring folder structure'
 )
