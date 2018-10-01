@@ -1,5 +1,7 @@
 # Directory Utilities
 
+[![GuardRails badge](https://badges.production.guardrails.io/mrstephenneal/dirutility.svg)](https://www.guardrails.io)
+
 dirutility is a Python package for generating an inventory of files within a directory tree.
 
 _Often we encounter directories with vast file structures too large to sort through by manually.  Directory Utilities
