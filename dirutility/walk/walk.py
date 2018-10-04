@@ -99,26 +99,24 @@ class DirPaths:
         return self._get_filepaths()
 
     def files(self):
-        """
-        Return list of files in root directory
-        """
+        """Return list of files in root directory"""
         self._printer('\tFiles Walk')
         for directory in self.directory:
             for path in os.listdir(directory):
-                if os.path.isfile(os.path.join(directory, path)):
+                full_path = os.path.join(directory, path)
+                if os.path.isfile(full_path):
                     if not path.startswith('.'):
-                        self.filepaths.append((directory, path))
+                        self.filepaths.append(full_path)
         return self._get_filepaths()
 
     def folders(self):
-        """
-        Return list of folders in root directory
-        """
+        """Return list of folders in root directory"""
         for directory in self.directory:
             for path in os.listdir(directory):
-                if os.path.isdir(os.path.join(directory, path)):
+                full_path = os.path.join(directory, path)
+                if os.path.isdir(full_path):
                     if not path.startswith('.'):
-                        self.filepaths.append((directory, path))
+                        self.filepaths.append(full_path)
         return self._get_filepaths()
 
 
