@@ -16,6 +16,12 @@ class TestWalk(unittest.TestCase):
         for i in paths:
             self.assertTrue(os.path.exists(i))
 
+    def test_DirPaths_sequential_nofilters(self):
+        paths = DirPaths(directory, console_stream=False, console_output=False, parallelize=False,
+                         to_exclude=False).walk()
+        for i in paths:
+            self.assertTrue(os.path.exists(i))
+
 
 if __name__ == '__main__':
     unittest.main()
