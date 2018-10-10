@@ -26,12 +26,14 @@ class Printer:
 
 class DirPaths:
     def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
-                 min_level=0, max_level=inf, filters=None, non_empty_folders=False, parallelize=False, pool_size=cpu_count(), console_output=True,
-                 console_stream=False):
+                 min_level=0, max_level=inf, filters=None, non_empty_folders=False, parallelize=False,
+                 pool_size=cpu_count(), console_output=False, console_stream=False):
         """
-        This class generates a list of either files and or folders within a root directory.  The walk method
-        generates a directory list of files by walking the file tree top down or bottom up.  The files and folders
-        method generate a list of files or folders in the top level of the tree.
+        This class generates a list of either files and or folders within a root directory.
+
+        The walk method generates a directory list of files by walking the file tree top down or bottom up.  The
+        files and folders method generate a list of files or folders in the top level of the  tree.
+
         :param directory: Starting directory file path
         :param full_paths: Bool, when true full paths are concatenated to file paths list
         :param topdown: Bool, when true walk method walks tree from the topdwon. When false tree is walked bottom up
@@ -50,6 +52,8 @@ class DirPaths:
         self.full_paths = full_paths
         self.topdown = topdown
 
+        # Exclude .DS_Store by default, set to_exclude to False to include .DS_Store
+        to_exclude = ['.DS_Store'] if to_exclude is None else to_exclude
         if any(i for i in [to_include, to_exclude, filters]) or min_level != 0 or max_level != inf:
             self.filters = PathFilters(to_include, to_exclude, min_level, max_level, filters, non_empty_folders)
         else:
