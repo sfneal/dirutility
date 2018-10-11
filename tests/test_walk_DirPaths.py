@@ -6,19 +6,17 @@ from tests import *
 
 class TestWalk(unittest.TestCase):
     def test_DirPaths_multiprocess(self):
-        paths = DirPaths(directory, console_stream=False, console_output=False, full_paths=True,
-                         parallelize=True).walk()
+        paths = DirPaths(directory, full_paths=True, parallelize=True).walk()
         for i in paths:
             self.assertTrue(os.path.exists(i))
 
     def test_DirPaths_sequential(self):
-        paths = DirPaths(directory, console_stream=False, console_output=False, parallelize=False).walk()
+        paths = DirPaths(directory, full_paths=True, parallelize=False).walk()
         for i in paths:
             self.assertTrue(os.path.exists(i))
 
     def test_DirPaths_sequential_nofilters(self):
-        paths = DirPaths(directory, console_stream=False, console_output=False, parallelize=False,
-                         to_exclude=False).walk()
+        paths = DirPaths(directory, full_paths=True, parallelize=False, to_exclude=False).walk()
         for i in paths:
             self.assertTrue(os.path.exists(i))
 

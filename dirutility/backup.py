@@ -3,7 +3,7 @@ import os
 from zipfile import ZipFile
 from tqdm import tqdm
 from dirutility import DirPaths
-from looptools import ActiveTimer
+from looptools import Timer
 
 
 class ZipBackup:
@@ -55,7 +55,7 @@ class ZipBackup:
 def main():
     from dirutility.gui import BackupZipGUI
     root = BackupZipGUI().source
-    with ActiveTimer(ZipBackup):
+    with Timer():
         ZipBackup(root)
 
 
