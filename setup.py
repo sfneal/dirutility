@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.2.22',
+    version='0.2.23',
     packages=find_packages(),
     install_requires=[
         'tqdm',
