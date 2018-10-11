@@ -60,14 +60,15 @@ class PathFilters:
             if not self._level_filters(path):
                 return False
 
+        # Force include and exclude iterations to be strings in case of integer filters
         # Handle exclusions
         if self.to_exclude:
-            if any(ex.lower() in path.lower() for ex in self.to_exclude):
+            if any(str(ex).lower() in path.lower() for ex in self.to_exclude):
                 return False
 
         # Handle inclusions
         if self.to_include:
-            if not any(inc.lower() in path.lower() for inc in self.to_include):
+            if not any(str(inc).lower() in path.lower() for inc in self.to_include):
                 return False
 
         return True
