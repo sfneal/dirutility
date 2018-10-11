@@ -7,7 +7,7 @@ from looptools import Timer
 
 
 class ZipBackup:
-    def __init__(self, source, destination=None, print_output=False):
+    def __init__(self, source, destination=None):
         """
         Create zip file backup of a directory.
         :param source: Source folder path
@@ -15,7 +15,6 @@ class ZipBackup:
         :param print_output: Prints directories parsed to console
         """
         self.source, self.zip_filename = self._set_paths(source, destination)
-        self.dirs = self._get_dirs(print_output)
         self.backup()
 
     @staticmethod
@@ -29,27 +28,24 @@ class ZipBackup:
 
         # Figure out the filename
         number = 1
-        while True:
-            zip_filename = os.path.join(destination, os.path.basename(source) + '_' + str(number) + '.zip')
-            if not os.path.exists(zip_filename):
-                break
-            number = number + 1
+        if os.path.exists(os.path.join(destination, os.path.basename(source) + '.zip')):
+            while True:
+                zip_filename = os.path.join(destination, os.path.basename(source) + '_' + str(number) + '.zip')
+                if not os.path.exists(zip_filename):
+                    break
+                number = number + 1
+        else:
+            zip_filename = os.path.join(destination, os.path.basename(source) + '.zip')
         return source, zip_filename
 
-    def _get_dirs(self, print_output):
-        print('Parsing %s...' % self.source)
-        return list(DirPaths(self.source, full_paths=True, console_stream=print_output).walk())
+    def _get_dirs(self):
+        return DirPaths(self.source, full_paths=True).walk()
 
     def backup(self):
-        print('Creating %s...' % self.zip_filename)
-        backup_zip = ZipFile(self.zip_filename, 'w')
-        self._write_zip(backup_zip)
-        backup_zip.close()
-        print('Done.')
-
-    def _write_zip(self, backup_zip):
-        for paths in tqdm(self.dirs, desc='Writing Zip Files', total=len(self.dirs)):
-            backup_zip.write(paths)
+        dirs = self._get_dirs()
+        with ZipFile(self.zip_filename, 'w') as backup_zip:
+            for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
+                backup_zip.write(path, path[len(self.source):len(path)])
 
 
 def main():
