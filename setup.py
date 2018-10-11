@@ -1,8 +1,17 @@
+import os
 from setuptools import setup, find_packages
+
+
+def get_version(version_file='_version.py'):
+    """Retrieve the package version from a version file in the package root."""
+    filename = os.path.join(os.path.dirname(__file__), 'dirutility', version_file)
+    with open(filename, 'rb') as fp:
+        return fp.read().decode('utf8').split('=')[1].strip(" \n'")
+
 
 setup(
     name='dirutility',
-    version='0.3.0',
+    version=get_version(),
     packages=find_packages(),
     install_requires=[
         'looptools>=1.0.0',
