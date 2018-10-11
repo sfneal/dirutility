@@ -192,8 +192,8 @@ def gui():
         from databasetools import CSVExport, DictTools
         save = params['save']
         if save['csv']:
-            CSVExport(list(paths), cols=['files'], file_path=save['directory'], file_name=os.path.basename(parse[
-                                                                                                               'directory']))
+            CSVExport(list(paths), cols=['files'], file_path=save['directory'],
+                      file_name=os.path.basename(parse['directory']))
         if save['json']:
             DictTools(save['directory'], os.path.basename(parse['directory'])).save(list(paths))
     print('Done!')
