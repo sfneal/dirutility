@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dirutility',
-    version='0.2.24',
+    version='0.3.0',
     packages=find_packages(),
     install_requires=[
         'looptools>=1.0.0',
