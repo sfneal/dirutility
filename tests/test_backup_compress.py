@@ -1,8 +1,14 @@
 import os
+import shutil
 from dirutility.backup import ZipBackup
 
 
 directory = '/Users/Stephen/Dropbox/Projects/SharpHockey/data_nhlapi/games/20172018'
+destination = os.path.join(os.path.dirname(__file__), 'data')
+if os.path.exists(destination):
+    shutil.rmtree(destination)
+if not os.path.exists(destination):
+    os.mkdir(destination)
 
 
 def humanize_bytes(bytes, precision=2):
@@ -24,6 +30,6 @@ def humanize_bytes(bytes, precision=2):
 
 
 for i in range(0, 10):
-    d = ZipBackup(directory, os.path.join(os.path.dirname(__file__), 'data'), compress_level=i).backup()
+    d = ZipBackup(directory, destination, compress_level=i).backup()
     print(humanize_bytes(os.path.getsize(str(d))), d)
 
