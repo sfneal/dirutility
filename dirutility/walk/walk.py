@@ -40,9 +40,10 @@ def md5_tuple(file_path):
 
 def pool_hash(path_list):
     """Pool process file hashing."""
-    pool = Pool(cpu_count())
-    vals = pool.map(md5_tuple, path_list)
-    pool.close()
+    with Timer('\tMD5 hashing completed in'):
+        pool = Pool(cpu_count())
+        vals = pool.map(md5_tuple, path_list)
+        pool.close()
     return vals
 
 
