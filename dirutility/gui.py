@@ -127,15 +127,16 @@ class BackupZipGUI:
 
                 # Source
                 [gui.Text('Select source folder', size=(15, 1), auto_size_text=False),
-                 gui.InputText('Source'),
+                 gui.InputText('Source', key='source'),
                  gui.FolderBrowse()],
 
                 [gui.Submit(), gui.Cancel()]]
 
-            (button, (values)) = form.LayoutAndShow(layout)
-
-        print(values)
-        return values[0]
+            button, values = form.LayoutAndRead(layout)
+            if button == 'Submit':
+                return values['source']
+            else:
+                exit()
 
 
 class CompareTreesGUI:
