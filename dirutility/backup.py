@@ -7,15 +7,22 @@ from looptools import Timer
 
 
 class ZipBackup:
-    def __init__(self, source, destination=None):
+    def __init__(self, source, destination=None, compress_level=0):
         """
         Create zip file backup of a directory.
         :param source: Source folder path
         :param destination: Defaults source parent directory
-        :param print_output: Prints directories parsed to console
+        :param compress_level: Compression level
         """
         self.source, self.zip_filename = self._set_paths(source, destination)
+        self.compress_level = compress_level
+
+    def __call__(self, *args, **kwargs):
         self.backup()
+        return self.zip_filename
+
+    def __str__(self):
+        return self.zip_filename
 
     @staticmethod
     def _set_paths(source, destination):
@@ -43,9 +50,17 @@ class ZipBackup:
 
     def backup(self):
         dirs = self._get_dirs()
-        with ZipFile(self.zip_filename, 'w') as backup_zip:
-            for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
-                backup_zip.write(path, path[len(self.source):len(path)])
+        try:
+            # Only supported in Python 3.7+
+            with ZipFile(self.zip_filename, 'w', compresslevel=self.compress_level) as backup_zip:
+                for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
+                    backup_zip.write(path, path[len(self.source):len(path)])
+        except TypeError:
+            # Legacy support
+            with ZipFile(self.zip_filename, 'w') as backup_zip:
+                for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
+                    backup_zip.write(path, path[len(self.source):len(path)])
+        return self.zip_filename
 
 
 def main():
