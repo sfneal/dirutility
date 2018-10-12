@@ -1,7 +1,7 @@
 import os
 import unittest
 from dirutility.walk import DirPaths
-from dirutility.walk.walk import hash_file
+from dirutility.walk.walk import md5_hash
 from tests import *
 
 
@@ -25,7 +25,7 @@ class TestWalk(unittest.TestCase):
         paths = DirPaths(directory, full_paths=True, parallelize=False, hash_files=True).walk()
         for path, _hash in paths:
             self.assertTrue(os.path.exists(path))
-            self.assertEqual(_hash, hash_file(path))
+            self.assertEqual(_hash, md5_hash(path))
 
 
 if __name__ == '__main__':

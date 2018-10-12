@@ -27,18 +27,21 @@ class Printer:
                 print('\t' + message)
 
 
-def hash_file(file_path):
+def md5_hash(file_path):
+    """Open a file path and hash the contents."""
     with open(file_path, 'rb') as fp:
         return md5(fp.read()).hexdigest()
 
 
-def hash_file_tup(file_path):
-    return file_path, hash_file(file_path)
+def md5_tuple(file_path):
+    """Returns a file_path, hash tuple."""
+    return file_path, md5_hash(file_path)
 
 
 def pool_hash(path_list):
+    """Pool process file hashing."""
     pool = Pool(cpu_count())
-    vals = pool.map(hash_file_tup, path_list)
+    vals = pool.map(md5_tuple, path_list)
     pool.close()
     return vals
 
