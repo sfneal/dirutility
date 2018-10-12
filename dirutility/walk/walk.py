@@ -1,8 +1,11 @@
 import os
 from pathlib import Path
 from math import inf
+from multiprocessing.pool import Pool
 from multiprocessing import cpu_count
 from functools import reduce
+from hashlib import md5
+
 from dirutility.walk.filter import PathFilters
 from dirutility.walk.multiprocess import Sprinter
 from dirutility.walk.sequential import Crawler
@@ -24,10 +27,26 @@ class Printer:
                 print('\t' + message)
 
 
+def hash_file(file_path):
+    with open(file_path, 'rb') as fp:
+        return md5(fp.read()).hexdigest()
+
+
+def hash_file_tup(file_path):
+    return file_path, hash_file(file_path)
+
+
+def pool_hash(path_list):
+    pool = Pool(cpu_count())
+    vals = pool.map(hash_file_tup, path_list)
+    pool.close()
+    return vals
+
+
 class DirPaths:
     def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
                  min_level=0, max_level=inf, filters=None, non_empty_folders=False, parallelize=False,
-                 pool_size=cpu_count(), console_output=False, console_stream=False):
+                 pool_size=cpu_count(), console_output=False, console_stream=False, hash_files=False):
         """
         This class generates a list of either files and or folders within a root directory.
 
@@ -41,12 +60,11 @@ class DirPaths:
         :param to_exclude: None by default.  List of filters NOT acceptable to return
         :param min_level: 0 by default.  Minimum directory level to save paths from
         :param max_level: Infinity by default.  Maximum directory level to save paths from
-        :param only_files: Bool, when true only files in the root directory are returned
-        :param only_folders: Bool, when true only folders in the root directort are returned
         :param parallelize: Bool, when true pool processing is enabled within walk method
         :param pool_size: Number of CPUs for pool processing, default is number of processors
         :param console_output: Bool, when true console output is printed
         :param console_stream: Bool, when true loops print live results
+        :param hash_files: Bool, when true walk() method return a dictionary file_paths and hashes
         """
         self.timer = Timer()
         self.full_paths = full_paths
@@ -61,6 +79,8 @@ class DirPaths:
 
         self.console_output = console_output
         self.console_stream = console_stream
+        self._hash_files = hash_files
+
         self._printer = Printer(console_output, console_stream).printer
         self._printer('DIRPATHS')
 
@@ -88,7 +108,10 @@ class DirPaths:
     def _get_filepaths(self):
         """Filters list of file paths to remove non-included, remove excluded files and concatenate full paths."""
         self._printer(str(self.__len__()) + " file paths have been parsed in " + str(self.timer.end))
-        return self.filepaths
+        if self._hash_files:
+            return pool_hash(self.filepaths)
+        else:
+            return self.filepaths
 
     def walk(self):
         """
