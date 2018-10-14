@@ -123,11 +123,14 @@ class BackupZipGUI:
         """Parameters for saving zip backups"""
         with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
             layout = [
-                [gui.Text('Zip Backup utility', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
+                [gui.Text('Zip Backup utility', size=(30, 1), font=("Helvetica", 30), text_color='blue')],
+                [gui.Text('Create a zip backup of a file or directory.', size=(50, 1), font=("Helvetica", 18),
+                          text_color='black')],
+                [gui.Text('-' * 200)],
 
                 # Source
-                [gui.Text('Select source folder', size=(15, 1), auto_size_text=False),
-                 gui.InputText('Source', key='source'),
+                [gui.Text('Select source folder', size=(15, 1), font=("Helvetica", 25), auto_size_text=False),
+                 gui.InputText('Source', key='source', font=("Helvetica", 20)),
                  gui.FolderBrowse()],
 
                 [gui.Submit(), gui.Cancel()]]

@@ -64,10 +64,31 @@ class ZipBackup:
 
 
 def main():
-    from dirutility.gui import BackupZipGUI
-    root = BackupZipGUI().source
-    with Timer():
-        ZipBackup(root)
+    try:
+        from dirutility.gui import BackupZipGUI
+        root = BackupZipGUI().source
+
+        with Timer():
+            ZipBackup(root)
+    except ImportError:
+        print('**pip install PySimpleGUI to run BackupZipGUI module**')
+        from argparse import ArgumentParser
+
+        # Declare argparse argument descriptions
+        usage = 'ZipBackup your files'
+        description = 'Create a zip backup of a file or directory.'
+        helpers = {
+            'files': "Input paths you would like to zip",
+        }
+
+        # construct the argument parse and parse the arguments
+        ap = ArgumentParser(usage=usage, description=description)
+        ap.add_argument('files', help=helpers['files'], nargs='+')
+        args = vars(ap.parse_args(['/Users/Stephen/Dropbox/scripts/dirutility/dist']))
+        print(args)
+
+        for f in args['files']:
+            ZipBackup(f).backup()
 
 
 if __name__ == "__main__":
