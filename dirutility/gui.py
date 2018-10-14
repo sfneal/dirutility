@@ -129,8 +129,8 @@ class BackupZipGUI:
                 [gui.Text('-' * 200)],
 
                 # Source
-                [gui.Text('Select source folder', size=(15, 1), font=("Helvetica", 25), auto_size_text=False),
-                 gui.InputText('Source', key='source', font=("Helvetica", 20)),
+                [gui.Text('Select source folder', size=(20, 1), font=("Helvetica", 25), auto_size_text=False),
+                 gui.InputText('', key='source', font=("Helvetica", 20)),
                  gui.FolderBrowse()],
 
                 [gui.Submit(), gui.Cancel()]]
