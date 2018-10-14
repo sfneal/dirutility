@@ -56,10 +56,18 @@ class ZipBackup:
                 for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
                     backup_zip.write(path, path[len(self.source):len(path)])
         except TypeError:
-            # Legacy support
-            with ZipFile(self.zip_filename, 'w') as backup_zip:
-                for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
-                    backup_zip.write(path, path[len(self.source):len(path)])
+            try:
+                import PySimpleGUI as sg
+                # Legacy support
+                with ZipFile(self.zip_filename, 'w') as backup_zip:
+                    for count, path in enumerate(dirs):
+                        backup_zip.write(path, path[len(self.source):len(path)])
+                        if not sg.OneLineProgressMeter('Writing Zip Files', count + 1, len(dirs) - 1, 'Files'):
+                            break
+            except ImportError:
+                with ZipFile(self.zip_filename, 'w') as backup_zip:
+                    for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
+                        backup_zip.write(path, path[len(self.source):len(path)])
         return self.zip_filename
 
 
@@ -67,9 +75,10 @@ def main():
     try:
         from dirutility.gui import BackupZipGUI
         root = BackupZipGUI().source
+        print(root)
 
         with Timer():
-            ZipBackup(root)
+            ZipBackup(root).backup()
     except ImportError:
         print('**pip install PySimpleGUI to run BackupZipGUI module**')
         from argparse import ArgumentParser
