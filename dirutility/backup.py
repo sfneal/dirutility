@@ -84,8 +84,7 @@ def main():
         # construct the argument parse and parse the arguments
         ap = ArgumentParser(usage=usage, description=description)
         ap.add_argument('files', help=helpers['files'], nargs='+')
-        args = vars(ap.parse_args(['/Users/Stephen/Dropbox/scripts/dirutility/dist']))
-        print(args)
+        args = vars(ap.parse_args())
 
         for f in args['files']:
             ZipBackup(f).backup()
