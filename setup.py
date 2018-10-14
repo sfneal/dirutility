@@ -17,6 +17,12 @@ setup(
         'looptools>=1.0.0',
         'tqdm',
     ],
+    entry_points={
+        'console_scripts': [
+            'zipbackup = dirutility.backup:main',
+            'dirpaths = dirutility.walk.walk:gui',
+        ]
+    },
     url='https://github.com/mrstephenneal/dirutility',
     license='MIT License',
     author='Stephen Neal',
