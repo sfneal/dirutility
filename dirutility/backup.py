@@ -75,10 +75,7 @@ def main():
     try:
         from dirutility.gui import BackupZipGUI
         root = BackupZipGUI().source
-        print(root)
-
-        with Timer():
-            ZipBackup(root).backup()
+        ZipBackup(root).backup()
     except ImportError:
         print('**pip install PySimpleGUI to run BackupZipGUI module**')
         from argparse import ArgumentParser
