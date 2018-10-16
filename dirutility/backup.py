@@ -1,21 +1,25 @@
 # Copies an entire folder and its contents into a zip file whose filename increments.
 import os
+import shutil
 from zipfile import ZipFile
 from tqdm import tqdm
 from dirutility import DirPaths
-from looptools import Timer
 
 
 class ZipBackup:
-    def __init__(self, source, destination=None, compress_level=0):
+    def __init__(self, source, destination=None, compress_level=0, delete_source=False):
         """
         Create zip file backup of a directory.
+
+        Backup the entire contents of "source" into a zip file.
+
         :param source: Source folder path
         :param destination: Defaults source parent directory
         :param compress_level: Compression level
         """
         self.source, self.zip_filename = self._set_paths(source, destination)
         self.compress_level = compress_level
+        self.delete_source = delete_source
 
     def __call__(self, *args, **kwargs):
         self.backup()
@@ -26,8 +30,8 @@ class ZipBackup:
 
     @staticmethod
     def _set_paths(source, destination):
-        # Backup the entire contents of "folder" into a zip file.
-        source = os.path.abspath(source)  # make sure folder is absolute
+        # make sure folder is absolute
+        source = os.path.abspath(source)
 
         # Set destination to next to source folder if not manually set
         if not destination:
@@ -81,6 +85,10 @@ class ZipBackup:
                 self._backup_pb_gui(dirs)
             except ImportError:
                 self._backup_pb_tqdm(dirs)
+
+        # Delete source if specified
+        if self.delete_source:
+            shutil.rmtree(self.source)
         return self.zip_filename
 
 
