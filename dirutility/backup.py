@@ -48,26 +48,39 @@ class ZipBackup:
     def _get_dirs(self):
         return DirPaths(self.source, full_paths=True).walk()
 
+    def _backup_compresslevel(self, dirs):
+        """Create a backup file with a compresslevel parameter."""
+        # Only supported in Python 3.7+
+        with ZipFile(self.zip_filename, 'w', compresslevel=self.compress_level) as backup_zip:
+            for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
+                backup_zip.write(path, path[len(self.source):len(path)])
+
+    def _backup_pb_gui(self, dirs):
+        """Create a zip backup with a GUI progress bar."""
+        import PySimpleGUI as sg
+        # Legacy support
+        with ZipFile(self.zip_filename, 'w') as backup_zip:
+            for count, path in enumerate(dirs):
+                backup_zip.write(path, path[len(self.source):len(path)])
+                if not sg.OneLineProgressMeter('Writing Zip Files', count + 1, len(dirs) - 1, 'Files'):
+                    break
+
+    def _backup_pb_tqdm(self, dirs):
+        """Create a backup with a tqdm progress bar."""
+        with ZipFile(self.zip_filename, 'w') as backup_zip:
+            for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
+                backup_zip.write(path, path[len(self.source):len(path)])
+
     def backup(self):
+        """Backup method driver."""
         dirs = self._get_dirs()
         try:
-            # Only supported in Python 3.7+
-            with ZipFile(self.zip_filename, 'w', compresslevel=self.compress_level) as backup_zip:
-                for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
-                    backup_zip.write(path, path[len(self.source):len(path)])
+            self._backup_compresslevel(dirs)
         except TypeError:
             try:
-                import PySimpleGUI as sg
-                # Legacy support
-                with ZipFile(self.zip_filename, 'w') as backup_zip:
-                    for count, path in enumerate(dirs):
-                        backup_zip.write(path, path[len(self.source):len(path)])
-                        if not sg.OneLineProgressMeter('Writing Zip Files', count + 1, len(dirs) - 1, 'Files'):
-                            break
+                self._backup_pb_gui(dirs)
             except ImportError:
-                with ZipFile(self.zip_filename, 'w') as backup_zip:
-                    for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
-                        backup_zip.write(path, path[len(self.source):len(path)])
+                self._backup_pb_tqdm(dirs)
         return self.zip_filename
 
 
