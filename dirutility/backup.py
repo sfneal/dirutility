@@ -17,6 +17,7 @@ class ZipBackup:
         :param destination: Defaults source parent directory
         :param compress_level: Compression level
         """
+        # TODO: Add multiprocessing support
         self.source, self.zip_filename = self._set_paths(source, destination)
         self.compress_level = compress_level
         self.delete_source = delete_source
