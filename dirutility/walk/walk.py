@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 from math import inf
 from multiprocessing.pool import Pool
@@ -45,6 +46,18 @@ def pool_hash(path_list):
         vals = pool.map(md5_tuple, path_list)
         pool.close()
     return vals
+
+
+def remover(file_path):
+    """Delete a file or directory path only if it exists."""
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+        return True
+    elif os.path.isdir(file_path):
+        shutil.rmtree(file_path)
+        return True
+    else:
+        return False
 
 
 class DirPaths:
