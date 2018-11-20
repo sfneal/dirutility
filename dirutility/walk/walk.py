@@ -1,11 +1,14 @@
 import os
 import shutil
+import platform
 from pathlib import Path
 from math import inf
 from multiprocessing.pool import Pool
 from multiprocessing import cpu_count
 from functools import reduce
 from hashlib import md5
+from datetime import datetime
+from operator import itemgetter
 
 from dirutility.walk.filter import PathFilters
 from dirutility.walk.multiprocess import Sprinter
@@ -28,6 +31,23 @@ class Printer:
                 print('\t' + message)
 
 
+def pool_process(func, iterable, process_name='Pool processing', cpus=cpu_count()):
+    """
+    Apply a function to each element in an iterable and return a result list.
+
+    :param func: A function that returns a value
+    :param iterable: A list or set of elements to be passed to the func as the singular parameter
+    :param process_name: Name of the process, for printing purposes only
+    :param cpus: Number of CPUs
+    :return: Result list
+    """
+    with Timer('\t{0} ({1}) completed in'.format(process_name, str(func))):
+        pool = Pool(cpus)
+        vals = pool.map(func, iterable)
+        pool.close()
+    return vals
+
+
 def md5_hash(file_path):
     """Open a file path and hash the contents."""
     with open(file_path, 'rb') as fp:
@@ -41,11 +61,7 @@ def md5_tuple(file_path):
 
 def pool_hash(path_list):
     """Pool process file hashing."""
-    with Timer('\tMD5 hashing completed in'):
-        pool = Pool(cpu_count())
-        vals = pool.map(md5_tuple, path_list)
-        pool.close()
-    return vals
+    return pool_process(md5_tuple, path_list, 'MD5 hashing')
 
 
 def remover(file_path):
@@ -58,6 +74,46 @@ def remover(file_path):
         return True
     else:
         return False
+
+
+def creation_date(path_to_file, return_datetime=True):
+    """
+    Retrieve a file's creation date.
+
+    Try to get the date that a file was created, falling back to when it was
+    last modified if that isn't possible.
+
+    See http://stackoverflow.com/a/39501288/1709587 for explanation.
+
+    :param path_to_file: File path
+    :param return_datetime: Bool, returns value in Datetime format
+    :return: Creation date
+    """
+    if platform.system() == 'Windows':
+        created_at = os.path.getctime(path_to_file)
+    else:
+        stat = os.stat(path_to_file)
+        try:
+            created_at = stat.st_birthtime
+        except AttributeError:
+            # We're probably on Linux. No easy way to get creation dates here,
+            # so we'll settle for when its content was last modified.
+            created_at = stat.st_mtime
+
+    if return_datetime:
+        return datetime.fromtimestamp(created_at)
+    else:
+        return created_at
+
+
+def creation_date_tuple(file_path):
+    """Returns a (file_path, creation_date) tuple."""
+    return file_path, creation_date(file_path)
+
+
+def pool_creation_date(path_list):
+    """Pool process file creation dates."""
+    return pool_process(creation_date_tuple, path_list, 'File creation dates')
 
 
 class DirPaths:
@@ -129,6 +185,20 @@ class DirPaths:
             return pool_hash(self.filepaths)
         else:
             return self.filepaths
+
+    def creation_dates(self, sort=True):
+        """
+        Return a list of (file_path, creation_date) tuples created from list of walked paths.
+
+        :param sort: Bool, sorts file_paths on created_date from newest to oldest.
+        :return: List of (file_path, created_date) tuples.
+        """
+        if not sort:
+            return pool_creation_date(self.filepaths)
+        else:
+            pcd = pool_creation_date(self.filepaths)
+            pcd.sort(key=itemgetter(1), reverse=True)
+            return pcd
 
     def walk(self):
         """
