@@ -56,7 +56,7 @@ class ZipBackup:
         if not self.overwrite:
             zip_filename = self._resolve_file_name(source, destination)
         else:
-            zip_filename = os.path.join(destination, os.path.basename(source) + '_' + str(number) + '.zip')
+            zip_filename = os.path.join(destination, os.path.basename(source) + '.zip')
             if os.path.exists(zip_filename):
                 os.remove(zip_filename)
 
