@@ -7,7 +7,7 @@ from dirutility import DirPaths
 
 
 class ZipBackup:
-    def __init__(self, source, destination=None, compress_level=0, delete_source=False):
+    def __init__(self, source, destination=None, compress_level=0, delete_source=False, overwrite=False):
         """
         Create zip file backup of a directory.
 
@@ -18,9 +18,10 @@ class ZipBackup:
         :param compress_level: Compression level
         """
         # TODO: Add multiprocessing support
-        self.source, self.zip_filename = self._set_paths(source, destination)
         self.compress_level = compress_level
         self.delete_source = delete_source
+        self.overwrite = overwrite
+        self.source, self.zip_filename = self._set_paths(source, destination)
 
     def __call__(self, *args, **kwargs):
         self.backup()
@@ -30,14 +31,7 @@ class ZipBackup:
         return self.zip_filename
 
     @staticmethod
-    def _set_paths(source, destination):
-        # make sure folder is absolute
-        source = os.path.abspath(source)
-
-        # Set destination to next to source folder if not manually set
-        if not destination:
-            destination = os.path.dirname(source)
-
+    def _resolve_file_name(source, destination):
         # Figure out the filename
         number = 1
         if os.path.exists(os.path.join(destination, os.path.basename(source) + '.zip')):
@@ -48,6 +42,24 @@ class ZipBackup:
                 number = number + 1
         else:
             zip_filename = os.path.join(destination, os.path.basename(source) + '.zip')
+        return zip_filename
+
+    def _set_paths(self, source, destination):
+        # make sure folder is absolute
+        source = os.path.abspath(source)
+
+        # Set destination to next to source folder if not manually set
+        if not destination:
+            destination = os.path.dirname(source)
+
+        # Create new file_name
+        if not self.overwrite:
+            zip_filename = self._resolve_file_name(source, destination)
+        else:
+            zip_filename = os.path.join(destination, os.path.basename(source) + '_' + str(number) + '.zip')
+            if os.path.exists(zip_filename):
+                os.remove(zip_filename)
+
         return source, zip_filename
 
     def _get_dirs(self):
