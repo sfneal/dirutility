@@ -1,7 +1,5 @@
 from dirutility import DirPaths
-from databasetools import DictTools
-import time
-from looptools.timer import ActiveTimer
+from looptools.timer import Timer
 
 
 def test_case(case):
@@ -42,7 +40,6 @@ def test_case(case):
 if __name__ == "__main__":
     save = '/Users/Stephen/Desktop'
     iters = 1
-    root = "/Volumes/Projects"
     root = "/Volumes/Storage II/HPA Design/Projects"
 
     max_level = 3
@@ -56,19 +53,17 @@ if __name__ == "__main__":
         2: {'include': {'Con Docs', 'Design Development', 'Marketing', 'Photos', 'Plot Files'}}
     }
 
-    with ActiveTimer(DirPaths):
+    with Timer(DirPaths):
         for i in range(0, iters):
             paths = DirPaths(root, console_output=True, parallelize=True, to_exclude=to_exclude, max_level=max_level,
-                             filters=filters, console_stream=False, pool_size=16, non_empty_folders=True)
+                             filters=filters, console_stream=False, pool_size=16, non_empty_folders=True).walk()
         paths_sorted = sorted(paths)
-        DictTools(save, 'DirPaths_filters_projects_1B').save(list(paths_sorted))
 
-    with ActiveTimer(DirPaths):
+    with Timer(DirPaths):
         for i in range(0, iters):
             paths2 = DirPaths(root, console_output=True, console_stream=False, to_exclude=to_exclude,
-                              max_level=max_level, filters=filters, non_empty_folders=True)
+                              max_level=max_level, filters=filters, non_empty_folders=True).walk()
         paths_sorted = sorted(paths2)
-        DictTools(save, 'DirPaths_filters_projects_2').save(list(paths_sorted))
 
     # with MyTimer(list_compare):
     #     unique1, unique2 = list_compare(paths, paths2)
