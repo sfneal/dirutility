@@ -73,9 +73,17 @@ class Crawler:
                 root = root[len(str(directory)) + 1:]
                 self._printer(str(count.up) + ": Explored path - " + str(root), stream=True)
                 if self.filters.validate(root):
+                    # Check that non-empty folders flag is on and we're at the max directory level
                     if self.filters.non_empty_folders and self.filters.get_level(root) == self.filters.max_level:
-                        if os.path.isdir(directory + os.sep + root) and os.listdir(directory + os.sep + root):
-                            self.add_path(directory, root)
+                        # Check that the path is not an empty folder
+                        if os.path.isdir(directory + os.sep + root):
+                            # Get paths in folder without walking directory
+                            paths = os.listdir(directory + os.sep + root)
+
+                            # Check that any of the paths are files and not just directories
+                            if paths and any(os.path.isfile(os.path.join(directory, p)) for p in paths):
+                                self.add_path(directory, root)
+
                     else:
                         for filename in files:
                             fullname = os.path.join(root, filename)
