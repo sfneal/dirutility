@@ -79,7 +79,7 @@ class Sprinter:
                             paths = os.listdir(base + os.sep + fullname)
 
                             # Check that any of the paths are files and not just directories
-                            if paths and any(os.path.isfile(os.path.join(base, p)) for p in paths):
+                            if paths and any(os.path.isfile(os.path.join(base, fullname, p)) for p in paths):
                                 nondirectories.append((base, fullname))
                     else:
                         # Append to directories if dir
