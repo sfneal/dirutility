@@ -75,9 +75,11 @@ class Sprinter:
                     if self.filters.non_empty_folders and self.filters.get_level(fullname) == self.filters.max_level:
                         # Check that the path is not an empty folder
                         if os.path.isdir(base + os.sep + fullname):
+                            # Get paths in folder without walking directory
+                            paths = os.listdir(base + os.sep + fullname)
+
                             # Check that any of the paths are files and not just directories
-                            if any(os.path.isfile(os.path.join(base, p)) for p in
-                                   os.listdir(base + os.sep + fullname)):
+                            if paths and any(os.path.isfile(os.path.join(base, p)) for p in paths):
                                 nondirectories.append((base, fullname))
                     else:
                         # Append to directories if dir
