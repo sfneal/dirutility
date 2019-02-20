@@ -12,8 +12,10 @@ class ZipBackup:
         Create zip file backup of a directory.
 
         Backup the entire contents of "source" into a zip file.
+        or
+        Backup all "source" files to destination zip file.
 
-        :param source: Source folder path
+        :param source: Source folder path or iterable of paths
         :param destination: Defaults source parent directory
         :param compress_level: Compression level
         """
@@ -32,7 +34,7 @@ class ZipBackup:
 
     @staticmethod
     def _resolve_file_name(source, destination):
-        # Figure out the filename
+        """Create a filename for the destination zip file."""
         number = 1
         if os.path.exists(os.path.join(destination, os.path.basename(source) + '.zip')):
             while True:
@@ -62,7 +64,7 @@ class ZipBackup:
 
         return source, zip_filename
 
-    def _get_dirs(self):
+    def _get_paths(self):
         return DirPaths(self.source, full_paths=True).walk()
 
     def _backup_compresslevel(self, dirs):
@@ -88,16 +90,18 @@ class ZipBackup:
             for path in tqdm(dirs, desc='Writing Zip Files', total=len(dirs)):
                 backup_zip.write(path, path[len(self.source):len(path)])
 
-    def backup(self):
+    def backup(self, paths=None):
         """Backup method driver."""
-        dirs = self._get_dirs()
+        if not paths:
+            paths = self._get_paths()
+
         try:
-            self._backup_compresslevel(dirs)
+            self._backup_compresslevel(paths)
         except TypeError:
             try:
-                self._backup_pb_gui(dirs)
+                self._backup_pb_gui(paths)
             except ImportError:
-                self._backup_pb_tqdm(dirs)
+                self._backup_pb_tqdm(paths)
 
         # Delete source if specified
         if self.delete_source:
