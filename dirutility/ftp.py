@@ -11,7 +11,7 @@ class FTP:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.session.quit()
+        self.disconnect()
 
     @staticmethod
     def connect(host, port, username, password):
@@ -24,6 +24,9 @@ class FTP:
         # Authenticate connection
         session.login(username, password)
         return session
+
+    def disconnect(self):
+        self.session.quit()
 
     def put(self, src, dst):
         """Upload a local file a specific directory on an FTP server."""
