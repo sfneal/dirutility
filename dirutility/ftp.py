@@ -103,3 +103,18 @@ class FTP:
         # Include hidden files
         else:
             return self.session.nlst()
+
+    def rename(self, from_name, to_name):
+        """Rename a file from_name on the server to to_name."""
+        return self.session.rename(from_name, to_name)
+
+    def delete(self, file_path):
+        """Remove the file named filename from the server."""
+        if os.sep in file_path:
+            directory, file_name = file_path.rsplit(os.sep, 1)
+            self.chdir(directory)
+            return self.session.delete(file_name)
+
+        else:
+            return self.session.delete(file_path)
+
