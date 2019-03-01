@@ -5,7 +5,7 @@ import ftplib
 
 class FTP:
     def __init__(self, host, port, username, password):
-        self.session = self.connect(host, port, username, password)
+        self._session = self.connect(host, port, username, password)
 
     def __enter__(self):
         return self
@@ -13,8 +13,14 @@ class FTP:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
 
+    @property
+    def session(self):
+        """Return ftplib.FTP object to give exposure to methods."""
+        return self._session
+
     @staticmethod
     def connect(host, port, username, password):
+        """Connect and login to an FTP server and return ftplib.FTP object."""
         # Instantiate ftplib client
         session = ftplib.FTP()
 
@@ -26,7 +32,14 @@ class FTP:
         return session
 
     def disconnect(self):
-        self.session.quit()
+        """Send a QUIT command to the server and close the connection (polite way)."""
+        self._session.quit()
+        return True
+
+    def close(self):
+        """Close the connection unilaterally, FTP instance is unusable after call."""
+        self._session.close()
+        return True
 
     def put(self, src, dst):
         """Upload a local file a specific directory on an FTP server."""
@@ -45,10 +58,10 @@ class FTP:
                 self.chdir(dst_dir)
 
             # Upload file
-            self.session.storbinary(dst_cmd, local_file)
+            self._session.storbinary(dst_cmd, local_file)
 
             # Reset current working directory to root
-            self.session.cwd('/')
+            self._session.cwd('/')
 
     def chdir(self, directory_path):
         """Change directories - create if it doesn't exist."""
@@ -56,14 +69,14 @@ class FTP:
             # print(self.session.pwd(), directory)
             if not self.directory_exists(directory):
                 try:
-                    self.session.mkd(directory)
+                    self._session.mkd(directory)
                 except ftplib.error_perm:
                     # Directory already exists
                     pass
-            self.session.cwd(directory)
+            self._session.cwd(directory)
 
     def directory_exists(self, directory):
         """Check if directory exists (in current location)"""
         file_list = []
-        self.session.retrlines('LIST', file_list.append)
+        self._session.retrlines('LIST', file_list.append)
         return any(f.split()[-1] == directory and f.upper().startswith('D') for f in file_list)
