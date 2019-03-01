@@ -67,20 +67,49 @@ class FTP:
             # Reset current working directory to root
             self.session.cwd('/')
 
-    def get(self, remote, local):
+    def get(self, remote, local=None, keep_dir_structure=False):
         """
         Download a remote file on the fto sever to a local directory.
 
         :param remote: File path of remote source file
         :param local: Directory of local destination directory
+        :param keep_dir_structure: If True, replicates the remote files folder structure
         """
-        assert os.path.isdir(local), 'Local destination must be a valid file path'
+        if local and os.path.isdir(local):
+            os.chdir(local)
+
+        elif keep_dir_structure:
+            # Replicate the remote files folder structure
+            for directory in remote.split(os.sep)[:-1]:
+                if not os.path.isdir(directory):
+                    os.mkdir(directory)
+                os.chdir(directory)
+
+        # Change to the correct directory if remote is a path not just a name
+        if os.sep in remote:
+            directory, file_name = remote.rsplit(os.sep, 1)
+            self.chdir(directory)
+        else:
+            file_name = remote
+
+        # Download the file and get response
+        response = self.retrieve_binary(file_name)
+
+        # Rename downloaded files if local is a file_name string
+        if local and isinstance(local, str):
+            os.rename(file_name, local)
+        return response
+
+    def retrieve_binary(self, file_name):
+        """Retrieve a file in binary transfer mode"""
+        with open(file_name, 'wb') as f:
+            return self.session.retrbinary('RETR ' + file_name, f.write)
 
     def chdir(self, directory_path, make=False):
         """Change directories and optionally make the directory if it doesn't exist."""
-        if make:
+        if os.sep in directory_path:
             for directory in directory_path.split(os.sep):
-                if not self.directory_exists(directory):
+                if make and not self.directory_exists(directory):
                     try:
                         self.session.mkd(directory)
                     except ftplib.error_perm:
