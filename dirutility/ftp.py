@@ -41,18 +41,23 @@ class FTP:
         self.session.close()
         return True
 
-    def put(self, src, dst):
-        """Upload a local file a specific directory on an FTP server."""
+    def put(self, local, remote):
+        """
+        Upload a local file to a directory on the remote ftp server.
+
+        :param local: File path of source file
+        :param remote: File path of destination directory
+        """
         # Destination directory
-        dst_dir = os.path.dirname(dst)
+        dst_dir = os.path.dirname(remote)
 
         # Destination file name
-        dst_file = os.path.basename(dst)
+        dst_file = os.path.basename(remote)
 
         # File upload command
         dst_cmd = 'STOR {0}'.format(dst_file)
 
-        with open(src, 'rb') as local_file:
+        with open(local, 'rb') as local_file:
             # Change directory if needed
             if dst_dir != dst_file:
                 self.chdir(dst_dir, make=True)
