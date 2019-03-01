@@ -93,17 +93,12 @@ class FTP:
             file_name = remote
 
         # Download the file and get response
-        response = self.retrieve_binary(file_name)
+        response = self._retrieve_binary(file_name)
 
         # Rename downloaded files if local is a file_name string
         if local and isinstance(local, str):
             os.rename(file_name, local)
         return response
-
-    def retrieve_binary(self, file_name):
-        """Retrieve a file in binary transfer mode"""
-        with open(file_name, 'wb') as f:
-            return self.session.retrbinary('RETR ' + file_name, f.write)
 
     def chdir(self, directory_path, make=False):
         """Change directories and optionally make the directory if it doesn't exist."""
@@ -118,16 +113,6 @@ class FTP:
                 self.session.cwd(directory)
         else:
             self.session.cwd(directory_path)
-
-    def directory_exists(self, directory):
-        """Check if directory exists (in current location)"""
-        file_list = []
-        self.session.retrlines('LIST', file_list.append)
-        return any(f.split()[-1] == directory and f.upper().startswith('D') for f in file_list)
-
-    def set_verbosity(self, level):
-        """Set the instance’s debugging level, controls the amount of debugging output printed."""
-        self.session.set_debuglevel(level)
 
     def listdir(self, directory_path=None, hidden_files=False):
         """
@@ -163,3 +148,17 @@ class FTP:
         else:
             return self.session.delete(file_path)
 
+    def directory_exists(self, directory):
+        """Check if directory exists (in current location)"""
+        file_list = []
+        self.session.retrlines('LIST', file_list.append)
+        return any(f.split()[-1] == directory and f.upper().startswith('D') for f in file_list)
+
+    def set_verbosity(self, level):
+        """Set the instance’s debugging level, controls the amount of debugging output printed."""
+        self.session.set_debuglevel(level)
+
+    def _retrieve_binary(self, file_name):
+        """Retrieve a file in binary transfer mode"""
+        with open(file_name, 'wb') as f:
+            return self.session.retrbinary('RETR ' + file_name, f.write)
