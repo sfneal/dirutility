@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2018 Stephen Neal
+Copyright (c) 2019 Stephen Neal
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
