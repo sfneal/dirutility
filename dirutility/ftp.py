@@ -33,12 +33,12 @@ class FTP:
 
     def disconnect(self):
         """Send a QUIT command to the server and close the connection (polite way)."""
-        self._session.quit()
+        self.session.quit()
         return True
 
     def close(self):
         """Close the connection unilaterally, FTP instance is unusable after call."""
-        self._session.close()
+        self.session.close()
         return True
 
     def put(self, src, dst):
@@ -58,10 +58,10 @@ class FTP:
                 self.chdir(dst_dir)
 
             # Upload file
-            self._session.storbinary(dst_cmd, local_file)
+            self.session.storbinary(dst_cmd, local_file)
 
             # Reset current working directory to root
-            self._session.cwd('/')
+            self.session.cwd('/')
 
     def chdir(self, directory_path):
         """Change directories - create if it doesn't exist."""
@@ -69,14 +69,18 @@ class FTP:
             # print(self.session.pwd(), directory)
             if not self.directory_exists(directory):
                 try:
-                    self._session.mkd(directory)
+                    self.session.mkd(directory)
                 except ftplib.error_perm:
                     # Directory already exists
                     pass
-            self._session.cwd(directory)
+            self.session.cwd(directory)
 
     def directory_exists(self, directory):
         """Check if directory exists (in current location)"""
         file_list = []
-        self._session.retrlines('LIST', file_list.append)
+        self.session.retrlines('LIST', file_list.append)
         return any(f.split()[-1] == directory and f.upper().startswith('D') for f in file_list)
+
+    def set_verbosity(self, level):
+        """Set the instance’s debugging level, controls the amount of debugging output printed."""
+        self.session.set_debuglevel(level)
