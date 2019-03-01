@@ -45,8 +45,7 @@ class FTP:
         """
         Upload a local file to a directory on the remote ftp server.
 
-        :param local: File path of source file
-        :param remote: File path of destination directory
+
         """
         # Destination directory
         dst_dir = os.path.dirname(remote)
@@ -68,16 +67,28 @@ class FTP:
             # Reset current working directory to root
             self.session.cwd('/')
 
+    def get(self, remote, local):
+        """
+        Download a remote file on the fto sever to a local directory.
+
+        :param remote: File path of remote source file
+        :param local: Directory of local destination directory
+        """
+        assert os.path.isdir(local), 'Local destination must be a valid file path'
+
     def chdir(self, directory_path, make=False):
         """Change directories and optionally make the directory if it doesn't exist."""
-        for directory in directory_path.split(os.sep):
-            if make and not self.directory_exists(directory):
-                try:
-                    self.session.mkd(directory)
-                except ftplib.error_perm:
-                    # Directory already exists
-                    pass
-            self.session.cwd(directory)
+        if make:
+            for directory in directory_path.split(os.sep):
+                if not self.directory_exists(directory):
+                    try:
+                        self.session.mkd(directory)
+                    except ftplib.error_perm:
+                        # Directory already exists
+                        pass
+                self.session.cwd(directory)
+        else:
+            self.session.cwd(directory_path)
 
     def directory_exists(self, directory):
         """Check if directory exists (in current location)"""
