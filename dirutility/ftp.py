@@ -83,3 +83,23 @@ class FTP:
     def set_verbosity(self, level):
         """Set the instance’s debugging level, controls the amount of debugging output printed."""
         self.session.set_debuglevel(level)
+
+    def listdir(self, directory_path=None, hidden_files=False):
+        """
+        Return a list of files and directories in a given directory.
+
+        :param directory_path: Optional str (defaults to current directory)
+        :param hidden_files: Include hidden files
+        :return: Directory listing
+        """
+        # Change current directory if a directory path is specified, otherwise use current
+        if directory_path:
+            self.chdir(directory_path)
+
+        # Exclude hidden files
+        if not hidden_files:
+            return [path for path in self.session.nlst() if not path.startswith('.')]
+
+        # Include hidden files
+        else:
+            return self.session.nlst()
