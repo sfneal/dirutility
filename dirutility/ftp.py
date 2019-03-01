@@ -55,7 +55,7 @@ class FTP:
         with open(src, 'rb') as local_file:
             # Change directory if needed
             if dst_dir != dst_file:
-                self.chdir(dst_dir)
+                self.chdir(dst_dir, make=True)
 
             # Upload file
             self.session.storbinary(dst_cmd, local_file)
@@ -63,11 +63,10 @@ class FTP:
             # Reset current working directory to root
             self.session.cwd('/')
 
-    def chdir(self, directory_path):
-        """Change directories - create if it doesn't exist."""
+    def chdir(self, directory_path, make=False):
+        """Change directories and optionally make the directory if it doesn't exist."""
         for directory in directory_path.split(os.sep):
-            # print(self.session.pwd(), directory)
-            if not self.directory_exists(directory):
+            if make and not self.directory_exists(directory):
                 try:
                     self.session.mkd(directory)
                 except ftplib.error_perm:
