@@ -1,5 +1,7 @@
 import os
 import stat
+import pwd
+import grp
 
 
 PERMISSIONS = {
@@ -148,6 +150,10 @@ class Permissions:
         assert privilege in PERMISSIONS['user'].keys()
         reading = PERMISSIONS['user'][privilege] + PERMISSIONS['group'][privilege] + PERMISSIONS['other'][privilege]
         os.chmod(self.file_path, reading)
+
+    def allow_readonly(self):
+        """Add an allowed privilege (read, write, execute, all)."""
+        os.chmod(self.file_path, 0o777)
 
     def allow_rwe(self, name):
         """Allow all privileges for a particular name group (user, group, other)."""
