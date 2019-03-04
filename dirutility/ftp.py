@@ -42,30 +42,8 @@ class FTP:
         return True
 
     def put(self, local, remote):
-        """
-        Upload a local file to a directory on the remote ftp server.
-
-
-        """
-        # Destination directory
-        dst_dir = os.path.dirname(remote)
-
-        # Destination file name
-        dst_file = os.path.basename(remote)
-
-        # File upload command
-        dst_cmd = 'STOR {0}'.format(dst_file)
-
-        with open(local, 'rb') as local_file:
-            # Change directory if needed
-            if dst_dir != dst_file:
-                self.chdir(dst_dir, make=True)
-
-            # Upload file
-            self.session.storbinary(dst_cmd, local_file)
-
-            # Reset current working directory to root
-            self.session.cwd('/')
+        """Upload a local file to a directory on the remote ftp server."""
+        return self._store_binary(local, remote)
 
     def get(self, remote, local=None, keep_dir_structure=False):
         """
@@ -159,6 +137,25 @@ class FTP:
         self.session.set_debuglevel(level)
 
     def _retrieve_binary(self, file_name):
-        """Retrieve a file in binary transfer mode"""
+        """Retrieve a file in binary transfer mode."""
         with open(file_name, 'wb') as f:
             return self.session.retrbinary('RETR ' + file_name, f.write)
+
+    def _store_binary(self, local_path, remote):
+        """Store a file in binary via ftp."""
+        # Destination directory
+        dst_dir = os.path.dirname(remote)
+
+        # Destination file name
+        dst_file = os.path.basename(remote)
+
+        # File upload command
+        dst_cmd = 'STOR {0}'.format(dst_file)
+
+        with open(local_path, 'rb') as local_file:
+            # Change directory if needed
+            if dst_dir != dst_file:
+                self.chdir(dst_dir, make=True)
+
+            # Upload file & return response
+            return self.session.storbinary(dst_cmd, local_file)
