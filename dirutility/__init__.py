@@ -5,7 +5,8 @@ from dirutility.backup import ZipBackup
 from dirutility.ftp import FTP
 from dirutility.permissions import Permissions
 from dirutility.multiprocess import pool_process
+from dirutility.system import SystemCommand
 
 
 __all__ = ['FlattenTree', 'CreateTree', 'move_files_to_folders', 'DirTree', 'DirPaths', 'desktop', 'ZipBackup', 'FTP',
-           'open_window', 'Permissions', 'pool_process']
+           'open_window', 'Permissions', 'pool_process', 'SystemCommand']
