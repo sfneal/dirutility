@@ -1,19 +1,20 @@
 import os
-import shutil
 import platform
-from pathlib import Path
-from math import inf
-from multiprocessing.pool import Pool
-from multiprocessing import cpu_count
+import shutil
+from datetime import datetime
 from functools import reduce
 from hashlib import md5
-from datetime import datetime
+from math import inf
+from multiprocessing import cpu_count
+from multiprocessing.pool import Pool
 from operator import itemgetter
+from pathlib import Path
+
+from looptools import Timer
 
 from dirutility.walk.filter import PathFilters
 from dirutility.walk.multiprocess import Sprinter
 from dirutility.walk.sequential import Crawler
-from looptools import Timer
 
 
 class Printer:

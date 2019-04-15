@@ -1,6 +1,6 @@
 import os
-from multiprocessing.pool import Pool
 from multiprocessing import Manager
+from multiprocessing.pool import Pool
 
 
 class Sprinter:

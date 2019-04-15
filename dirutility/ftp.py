@@ -1,6 +1,6 @@
 # Connect to a server via FTP and execute commands
-import os
 import ftplib
+import os
 
 
 class FTP:
