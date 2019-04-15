@@ -5,7 +5,7 @@ from zipfile import ZipFile
 
 from tqdm import tqdm
 
-from dirutility import DirPaths
+from dirutility.walk import DirPaths
 
 
 class ZipBackup:
