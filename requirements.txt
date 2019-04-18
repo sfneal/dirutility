@@ -1,7 +1,7 @@
 databasetools==1.4.4
 differentiate==1.2.1
 dirutility==0.5.6
-looptools==1.1.1
+looptools==1.2.0
 mysql-connector==2.1.6
 mysql-toolkit==1.8.17
 sqlparse==0.3.0
