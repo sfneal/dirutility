@@ -36,3 +36,46 @@ def pool_process(func, iterable, cpus=cpu_count(), return_vals=False, cpu_reduct
             pool.map(func, iterable)
             pool.close()
             return True
+
+
+class PoolProcess:
+    _func = None
+    _iterable = None
+
+    def __init__(self, func, iterable, cpus=cpu_count(), cpu_reduction=0):
+        """
+        Multiprocessing helper function for performing looped operation using multiple processors.
+
+        :param func: Function to call
+        :param iterable: Iterable object to perform each function on
+        :param cpus: Number of cpu cores, defaults to system's cpu count
+        :param cpu_reduction: Number of cpu core's to not use
+        """
+        self._func = func
+        self._iterable = iterable
+        self.cpu_count = cpus - abs(cpu_reduction)
+
+    def map(self):
+        """Perform a function on every item in an iterable."""
+        with Pool(self.cpu_count) as pool:
+            pool.map(self._func, self._iterable)
+            pool.close()
+        return True
+
+    def map_return(self):
+        """Perform a function on every item and return a list of yield values."""
+        with Pool(self.cpu_count) as pool:
+            vals = pool.map(self._func, self._iterable)
+            pool.close()
+            return vals
+
+    def map_tqdm(self):
+        """
+        Perform a function on every item while displaying a progress bar.
+
+        :return: A list of yielded values
+        """
+        with Pool(self.cpu_count) as pool:
+            vals = [v for v in tqdm(pool.imap_unordered(self._func, self._iterable), total=len(self._iterable))]
+            pool.close()
+            return vals

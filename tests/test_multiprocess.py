@@ -16,7 +16,7 @@ ITER = list(range(100))
 EXPECTED = set([a * a for a in range(100)])
 
 
-class TestMultiprocess(unittest.TestCase):
+class TestMultiprocessFunc(unittest.TestCase):
     def setUp(self):
         self.result = None
 
