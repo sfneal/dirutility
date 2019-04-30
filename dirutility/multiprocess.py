@@ -79,13 +79,18 @@ class PoolProcess:
             pool.close()
             return self.result
 
-    def map_tqdm(self):
+    def map_tqdm(self, desc=None, unit='it'):
         """
         Perform a function on every item while displaying a progress bar.
 
+        :param desc: Optional, progress bar description
+        :param unit: Optional, progress bar units (default is 'it' for 'iteration')
         :return: A list of yielded values
         """
+        tqdm_args = dict(total=len(self._iterable),
+                         desc=desc,
+                         unit=unit)
         with Pool(self.cpu_count) as pool:
-            self._result = [v for v in tqdm(pool.imap_unordered(self._func, self._iterable), total=len(self._iterable))]
+            self._result = [v for v in tqdm(pool.imap_unordered(self._func, self._iterable), **tqdm_args)]
             pool.close()
             return self.result
