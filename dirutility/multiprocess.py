@@ -54,6 +54,12 @@ class PoolProcess:
         self._func = func
         self._iterable = iterable
         self.cpu_count = cpus - abs(cpu_reduction)
+        self._result = None
+
+    @property
+    def result(self):
+        """Return the results returned by map_return or map_tqdm methods."""
+        return self._result
 
     def map(self):
         """Perform a function on every item in an iterable."""
@@ -65,9 +71,9 @@ class PoolProcess:
     def map_return(self):
         """Perform a function on every item and return a list of yield values."""
         with Pool(self.cpu_count) as pool:
-            vals = pool.map(self._func, self._iterable)
+            self._result = pool.map(self._func, self._iterable)
             pool.close()
-            return vals
+            return self._result
 
     def map_tqdm(self):
         """
@@ -76,6 +82,6 @@ class PoolProcess:
         :return: A list of yielded values
         """
         with Pool(self.cpu_count) as pool:
-            vals = [v for v in tqdm(pool.imap_unordered(self._func, self._iterable), total=len(self._iterable))]
+            self._result = [v for v in tqdm(pool.imap_unordered(self._func, self._iterable), total=len(self._iterable))]
             pool.close()
-            return vals
+            return self._result
