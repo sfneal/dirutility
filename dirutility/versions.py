@@ -25,6 +25,7 @@ class Versions:
     def sorted(self):
         """Sort a list of semver formatted versions by major, minor, path and cycle."""
         return [k for k, v in sorted(self.versions.items(),
+                                     reverse=True,
                                      key=lambda kv: (kv[1]['major'], kv[1]['minor'], kv[1]['patch'], kv[1]['cycle']))]
 
     def latest(self):
