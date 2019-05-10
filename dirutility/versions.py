@@ -30,7 +30,7 @@ class Versions:
 
     def latest(self):
         """Retrieve the latest version."""
-        return self.sorted[-1]
+        return self.sorted[0]
 
 
 def get_version(source):
