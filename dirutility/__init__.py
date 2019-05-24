@@ -7,6 +7,7 @@ from dirutility.system import SystemCommand
 from dirutility.view import desktop, open_window
 from dirutility.walk import DirPaths, DirTree
 from dirutility.versions import Versions
+from dirutility.hash import Hash
 
 __all__ = ['FlattenTree', 'CreateTree', 'move_files_to_folders', 'DirTree', 'DirPaths', 'desktop', 'ZipBackup', 'FTP',
-           'open_window', 'Permissions', 'pool_process', 'SystemCommand', 'PoolProcess', 'Versions']
+           'open_window', 'Permissions', 'pool_process', 'SystemCommand', 'PoolProcess', 'Versions', 'Hash']
