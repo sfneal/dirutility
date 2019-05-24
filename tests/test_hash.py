@@ -40,7 +40,7 @@ class TestHashFilesRecursive(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        print('\n\nFile Hashing results\n' + '-' * 68)
+        print('\n\nRecursive File Hashing results\n' + '-' * 68)
         Timer().print_times('TestHashFile')
 
     @Timer.decorator_noprint
