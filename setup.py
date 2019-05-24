@@ -16,6 +16,7 @@ setup(
     install_requires=[
         'looptools>=1.0.0',
         'tqdm',
+        'xxhash'
     ],
     entry_points={
         'console_scripts': [
