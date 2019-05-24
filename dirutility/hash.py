@@ -42,7 +42,7 @@ class _HashAlgos:
 
     def _get_shake_128(self):
         """Hash a string using the shake_128 algo and return in hexdigested form."""
-        return shake_128(self.string).hexdigest()
+        return shake_128(self.string).hexdigest(128)
 
     def _get_xxh32(self):
         """Hash a string using the xxh32 algo and return in hexdigested form."""
