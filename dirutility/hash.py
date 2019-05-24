@@ -2,7 +2,7 @@ from hashlib import md5, sha256, sha1, blake2b, blake2s, sha512, shake_128
 from xxhash import xxh32, xxh64
 
 
-class Hash:
+class _HashAlgos:
     def __init__(self, string):
         self.string = string
 
@@ -53,9 +53,9 @@ class Hash:
         return xxh64(self.string).hexdigest()
 
 
-class HashCompare(Hash):
+class Hash(_HashAlgos):
     def __init__(self, string):
-        super(HashCompare, self).__init__(string)
+        super(Hash, self).__init__(string)
 
     def md5(self):
         """Return a hexdigested md5 hash."""
