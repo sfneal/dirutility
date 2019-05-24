@@ -14,7 +14,7 @@ setup(
     version=get_version(),
     packages=find_packages(),
     install_requires=[
-        'looptools>=1.0.0',
+        'looptools>=1.2.1',
         'tqdm',
         'xxhash'
     ],
