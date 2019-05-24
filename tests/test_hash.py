@@ -5,10 +5,6 @@ from looptools import Timer
 from dirutility.hash import Hash
 
 
-# Disable immediate timer result printing
-Timer().disable_printing()
-
-
 class TestHashFile(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
