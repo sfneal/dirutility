@@ -1,14 +1,69 @@
 import unittest
-
 from looptools import Timer
+from dirutility import Hash, DirPaths, PoolProcess
 
-from dirutility.hash import Hash
+
+FILE = 'data/Public Site - Services.pdf'
+DIRECTORY = '/Volumes/Storage/SharpDB/People'
+
+
+def get_paths():
+    return DirPaths(DIRECTORY, full_paths=True, parallelize=False).walk()
+
+
+def hash_file(path):
+    with open(path, 'rb') as fp:
+        return Hash(fp.read())
+
+
+def hash_file_xxh64(path):
+    return hash_file(path).xxh64()
+
+
+def hash_file_xxh32(path):
+    return hash_file(path).xxh32()
+
+
+def hash_file_md5(path):
+    return hash_file(path).md5()
+
+
+def hash_file_sha256(path):
+    return hash_file(path).sha256()
+
+
+class TestHashFilesRecursive(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.paths = get_paths()
+        print(len(cls.paths))
+
+    @classmethod
+    def tearDownClass(cls):
+        print('\n\nFile Hashing results\n' + '-' * 68)
+        Timer().print_times('TestHashFile')
+
+    @Timer.decorator_noprint
+    def test_xxh64(self):
+        return PoolProcess(hash_file_xxh64, self.paths).map_return()
+
+    @Timer.decorator_noprint
+    def test_xxh32(self):
+        return PoolProcess(hash_file_xxh32, self.paths).map_return()
+
+    @Timer.decorator_noprint
+    def test_md5(self):
+        return PoolProcess(hash_file_md5, self.paths).map_return()
+
+    @Timer.decorator_noprint
+    def test_sha256(self):
+        return PoolProcess(hash_file_sha256, self.paths).map_return()
 
 
 class TestHashFile(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        with open('data/Public Site - Services.pdf', 'rb') as fp:
+        with open(FILE, 'rb') as fp:
             cls.hash = Hash(fp.read())
 
     @classmethod
