@@ -113,8 +113,6 @@ try:
             return self._xxh64
 
 except ImportError:
-    print('Install xxhash in order to use the Hash module.')
-
     class Hash:
         def __init__(self, *args, **kwargs):
             pass
