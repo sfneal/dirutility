@@ -21,6 +21,7 @@ setup(
         'console_scripts': [
             'zipbackup = dirutility.backup:main',
             'dirpaths = dirutility.walk.walk:gui',
+            'text-dump = dirutility.dump:main'
         ]
     },
     url='https://github.com/mrstephenneal/dirutility',
