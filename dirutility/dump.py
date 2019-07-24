@@ -11,10 +11,11 @@ class TextDump:
             print(statement)
 
     @staticmethod
-    def _encode_data(data, split=None):
+    def _encode_data(data, split=None, skip=None):
         """Encode data as a string in order to write to a text file."""
         data = data.split(split) if split else data
         if isinstance(data, (list, tuple, set)):
+            data = [d for d in data if skip not in d] if skip else data
             return '\n'.join(data)
         else:
             return data
@@ -24,19 +25,19 @@ class TextDump:
         with open(self.file_path, 'r') as txt:
             return txt.read()
 
-    def write(self, data, split=None, unique=False):
+    def write(self, data, split=None, unique=False, skip=None):
         self.printer('Writing to text file `{}`'.format(self.file_path))
         with open(self.file_path, 'w') as txt:
-            result = txt.write(self._encode_data(data, split))
+            result = txt.write(self._encode_data(data, split, skip))
 
         # Remove repeated lines if unique is True
         if unique:
             self.write(list(set(self.read().split('\n'))))
 
-    def append(self, data, split=None, unique=False):
+    def append(self, data, split=None, unique=False, skip=None):
         self.printer('Appending to text file `{}`'.format(self.file_path))
         with open(self.file_path, 'a') as txt:
-            result = txt.write(self._encode_data(data, split))
+            result = txt.write(self._encode_data(data, split, skip))
 
         # Remove repeated lines if unique is True
         if unique:
@@ -48,14 +49,14 @@ def reader(file_path):
     return TextDump(file_path).read()
 
 
-def writer(file_path, data, split=None, unique=False):
+def writer(file_path, data, split=None, unique=False, skip=False):
     """Write to a text file and return its contents."""
-    return TextDump(file_path).write(data, split, unique)
+    return TextDump(file_path).write(data, split, unique, skip)
 
 
-def appender(file_path, data, split=None, unique=False):
+def appender(file_path, data, split=None, unique=False, skip=False):
     """Append a text file and return its contents."""
-    return TextDump(file_path).append(data, split, unique)
+    return TextDump(file_path).append(data, split, unique, skip)
 
 
 def main():
@@ -63,7 +64,7 @@ def main():
     Example Usage:
 
     $ text-dump append --file-path domains.txt --data "projects.localhost" --split ' ' --unique
-    $ text-dump write --file-path domains.txt --data "dev.hpadesign.com staging.hpadesign.com beta.hpadesign.com public.localhost" --split ' '
+    $ text-dump write --file-path domains.txt --data "dev.hpadesign.com staging.hpadesign.com beta.hpadesign.com public.localhost" --split ' ' --skip 'localhost'
     $ text-dump read --file-path domains.txt
     public.localhost"
     """
@@ -75,6 +76,7 @@ def main():
         'data': "Data to write/append to the text file.",
         'split': "Character used separate a plain text list.",
         'unique': "Only write unique values to the text file.",
+        'skip': "Skip writing a datapoint if the 'skip string' is found.",
     }
 
     # construct the argument parse and parse the arguments
@@ -92,6 +94,7 @@ def main():
     parser_write.add_argument('-d', '--data', help=helpers['data'])
     parser_write.add_argument('-s', '--split', help=helpers['split'], type=str, default=None)
     parser_write.add_argument('-u', '--unique', help=helpers['unique'], action='store_true', default=False)
+    parser_write.add_argument('--skip', help=helpers['skip'], type=str, default=False)
     parser_write.set_defaults(func=writer)
 
     # Append
@@ -100,6 +103,7 @@ def main():
     parser_write.add_argument('-d', '--data', help=helpers['data'])
     parser_write.add_argument('-s', '--split', help=helpers['split'], type=str, default=None)
     parser_write.add_argument('-u', '--unique', help=helpers['unique'], action='store_true', default=False)
+    parser_write.add_argument('--skip', help=helpers['skip'], type=str, default=False)
     parser_write.set_defaults(func=appender)
 
     # Parse Arguments
