@@ -37,8 +37,9 @@ class TextDump:
 
     def append(self, data, split=None, unique=False, skip=None):
         self.printer('Appending to text file `{}`'.format(self.file_path))
+        write_newline = True if len(self.read(list)) > 0 else False
         with open(self.file_path, 'a') as txt:
-            if len(txt.read().split('\n')) > 0:
+            if write_newline:
                 txt.write('\n')
             result = txt.write(self._encode_data(data, split, skip))
 
