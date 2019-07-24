@@ -38,6 +38,8 @@ class TextDump:
     def append(self, data, split=None, unique=False, skip=None):
         self.printer('Appending to text file `{}`'.format(self.file_path))
         with open(self.file_path, 'a') as txt:
+            if len(txt.readlines()) > 0:
+                txt.write('\n')
             result = txt.write(self._encode_data(data, split, skip))
 
         # Remove repeated lines if unique is True
