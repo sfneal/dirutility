@@ -20,10 +20,11 @@ class TextDump:
         else:
             return data
 
-    def read(self):
+    def read(self, return_type=None):
+        return_type = str if 'str' in return_type else return_type
         self.printer('Reading from text file `{}`'.format(self.file_path))
         with open(self.file_path, 'r') as txt:
-            return txt.read()
+            return return_type(txt.read()) if return_type else txt.read()
 
     def write(self, data, split=None, unique=False, skip=None):
         self.printer('Writing to text file `{}`'.format(self.file_path))
@@ -44,9 +45,9 @@ class TextDump:
             self.write(list(set(self.read().split('\n'))))
 
 
-def reader(file_path):
+def reader(file_path, return_type):
     """Read a text file and return its contents."""
-    return TextDump(file_path).read()
+    return TextDump(file_path).read(return_type)
 
 
 def writer(file_path, data, split=None, unique=False, skip=False):
@@ -77,6 +78,7 @@ def main():
         'split': "Character used separate a plain text list.",
         'unique': "Only write unique values to the text file.",
         'skip': "Skip writing a datapoint if the 'skip string' is found.",
+        'return-type': "Type to return data in.",
     }
 
     # construct the argument parse and parse the arguments
@@ -86,6 +88,7 @@ def main():
     # Read
     parser_read = sub_parser.add_parser('read')
     parser_read.add_argument('-f', '--file-path', help=helpers['file-path'], type=str)
+    parser_read.add_argument('-t', '--return-type', help=helpers['return-type'], type=str)
     parser_read.set_defaults(func=reader)
 
     # Write
