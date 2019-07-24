@@ -22,10 +22,12 @@ class TextDump:
             return data
 
     def read(self, return_type=None):
-        return_type = list if 'list' in str(return_type) or 'list' == str(return_type) else return_type
         self.printer('Reading from text file `{}`'.format(self.file_path))
         with open(self.file_path, 'r') as txt:
-            return return_type(txt.read().splitlines()) if return_type else txt.read()
+            if str(return_type) == 'list':
+                return ' '.join(txt.read().splitlines())
+            else:
+                return txt.read()
 
     def write(self, data, split=None, unique=False, skip=None):
         self.printer('Writing to text file `{}`'.format(self.file_path))
@@ -38,6 +40,7 @@ class TextDump:
 
     def append(self, data, split=None, unique=False, skip=None):
         self.printer('Appending to text file `{}`'.format(self.file_path))
+        write_newline = False
         if os.path.exists(self.file_path):
             write_newline = True if len(self.read(list)) > 0 else False
         with open(self.file_path, 'a') as txt:
