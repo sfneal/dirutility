@@ -36,7 +36,7 @@ class TextDump:
     def append(self, data, split=None, unique=False):
         self.printer('Appending to text file `{}`'.format(self.file_path))
         with open(self.file_path, 'a') as txt:
-            result = txt.write('\n' + self._encode_data(data, split))
+            result = txt.write(self._encode_data(data, split))
 
         # Remove repeated lines if unique is True
         if unique:
