@@ -21,7 +21,7 @@ class TextDump:
             return data
 
     def read(self, return_type=None):
-        return_type = str if 'str' in return_type else return_type
+        return_type = list if 'list' in return_type else return_type
         self.printer('Reading from text file `{}`'.format(self.file_path))
         with open(self.file_path, 'r') as txt:
             return return_type(txt.read()) if return_type else txt.read()
