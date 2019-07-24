@@ -24,7 +24,7 @@ class TextDump:
         return_type = list if 'list' in return_type else return_type
         self.printer('Reading from text file `{}`'.format(self.file_path))
         with open(self.file_path, 'r') as txt:
-            return return_type(txt.read()) if return_type else txt.read()
+            return return_type(txt.read().splitlines()) if return_type else txt.read()
 
     def write(self, data, split=None, unique=False, skip=None):
         self.printer('Writing to text file `{}`'.format(self.file_path))
