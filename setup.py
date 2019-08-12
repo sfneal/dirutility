@@ -14,7 +14,7 @@ setup(
     version=get_version(),
     packages=find_packages(),
     install_requires=[
-        'looptools>=1.2.1',
+        'looptools>=1.2.3',
         'tqdm'
     ],
     entry_points={
