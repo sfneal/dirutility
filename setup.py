@@ -10,7 +10,7 @@ def get_version(version_file='_version.py'):
 
 
 setup(
-    name='dirutility',
+    name='dirutility_dev',
     version=get_version(),
     packages=find_packages(),
     install_requires=[
