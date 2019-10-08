@@ -1,7 +1,7 @@
 import os
-import tarfile
 import tempfile
 from contextlib import contextmanager
+from typing import Dict, Union, TextIO
 
 from dirutility.error import InvalidAbsoluteDirectoryError
 from dirutility.open.clazz import TempDir, TarFile
@@ -35,7 +35,7 @@ def tempdir(absdirpath: str, prefix='', suffix='') -> TempDir:
 
 
 @contextmanager
-def tardir(
+def tartempdir(
         absfilepath: str, tempdir: TempDir, mode: str = 'w:gz', temp: bool = True, force: bool = True) -> TarFile:
     """
     Create and return a tarfile directory.  This has the same
@@ -66,3 +66,34 @@ def tardir(
         os.remove(absfilepath)
     else:
         pass
+
+
+@contextmanager
+def tardir(
+        absfilepath: str, mode: str = 'w:gz', temp: bool = True, force: bool = True,
+        **paths: Dict[str, Union[dict, str, TextIO, None]]) -> TarFile:
+    """
+    Create and return a tarfile directory.  This has the same
+    behavior as mkdtemp then create tarfile from temp dir but can be used as a context manager.  For
+    example:
+
+        with tardir('/home/dirutility/temp/bac.tar', 'haha.tar') as tardir:
+            ...
+
+    Upon exiting the context, the directory and everything contained
+    in it are removed.
+
+    :param absfilepath: archive file create abs path
+    :param mode: tarfile mode
+    :param temp: temporary file
+    :param force: force create file
+    :param paths: directory paths objects
+    :return:
+    :rtype: TarFile
+    """
+    absdirpath = absfilepath.rsplit('/', 1)[0]
+    with tempdir(absdirpath) as temp_obj:
+        temp_obj.create_structure(**paths)
+        with tartempdir(absfilepath, temp_obj, mode=mode, temp=temp, force=force) as tar_obj:
+            tar_obj.create_tarfile()
+            yield tar_obj
