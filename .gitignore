@@ -1,2 +1,9 @@
+# ignore package
 **/*.egg-info/
 **/dist/
+
+# idea
+**/.idea/
+
+# python env
+**/*.pyenv
