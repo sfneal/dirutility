@@ -4,7 +4,7 @@ from contextlib import contextmanager
 from typing import Dict, Union, TextIO
 
 from dirutility.error import InvalidAbsoluteDirectoryError
-from dirutility.open.clazz import TempDir, TarFile
+from dirutility.open.clazz import TempDir, TarFile, ZipFile
 
 
 @contextmanager
@@ -57,9 +57,9 @@ def tartempdir(
     :rtype: TarFile
     """
     if force:
-        yield TarFile(absfilepath, tempdir, mode)
+        yield _create_archive(absfilepath, tempdir, mode)
     elif not os.path.exists(absfilepath):
-        yield TarFile(absfilepath, tempdir, mode)
+        yield _create_archive(absfilepath, tempdir, mode)
     else:
         raise FileExistsError(absfilepath)
     if temp:
@@ -68,9 +68,23 @@ def tartempdir(
         pass
 
 
+def _create_archive(absfilepath, tempdir, mode) -> TarFile:
+    """
+
+    :param absfilepath:
+    :param tempdir:
+    :param mode:
+    :return:
+    """
+    if mode.endswith('zip'):
+        return ZipFile(absfilepath, tempdir, mode)
+    else:
+        return TarFile(absfilepath, tempdir, mode)
+
+
 @contextmanager
 def tardir(
-        absfilepath: str, mode: str = 'w:gz', temp: bool = True, force: bool = True,
+        absfilepath: str, mode: str = 'w:gz', temp: bool = True, force: bool = True, withdir: bool = False,
         **paths: Dict[str, Union[dict, str, TextIO, None]]) -> TarFile:
     """
     Create and return a tarfile directory.  This has the same
@@ -87,6 +101,7 @@ def tardir(
     :param mode: tarfile mode
     :param temp: temporary file
     :param force: force create file
+    :param withdir: if or not with dir in archive file
     :param paths: directory paths objects
     :return:
     :rtype: TarFile
@@ -95,5 +110,5 @@ def tardir(
     with tempdir(absdirpath) as temp_obj:
         temp_obj.create_structure(**paths)
         with tartempdir(absfilepath, temp_obj, mode=mode, temp=temp, force=force) as tar_obj:
-            tar_obj.create_tarfile()
+            tar_obj.create_archive(withdir=withdir)
             yield tar_obj
