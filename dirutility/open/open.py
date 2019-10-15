@@ -56,16 +56,20 @@ def tartempdir(
     :return:
     :rtype: TarFile
     """
-    if force:
-        yield _create_archive(absfilepath, tempdir, mode)
-    elif not os.path.exists(absfilepath):
-        yield _create_archive(absfilepath, tempdir, mode)
-    else:
-        raise FileExistsError(absfilepath)
-    if temp:
-        os.remove(absfilepath)
-    else:
-        pass
+    file_create_by_me = False
+    try:
+        if force:
+            yield _create_archive(absfilepath, tempdir, mode)
+            file_create_by_me = True
+        elif not os.path.exists(absfilepath):
+            yield _create_archive(absfilepath, tempdir, mode)
+        else:
+            raise FileExistsError(absfilepath)
+    finally:
+        if temp and file_create_by_me:
+            os.remove(absfilepath)
+        else:
+            pass
 
 
 def _create_archive(absfilepath, tempdir, mode) -> TarFile:
