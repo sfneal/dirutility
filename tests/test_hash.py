@@ -3,7 +3,7 @@ from looptools import Timer
 from dirutility import Hash, DirPaths, PoolProcess
 
 
-FILE = 'data/Public Site - Services.pdf'
+FILE = 'data/document.pdf'
 DIRECTORY = '/Volumes/Storage/SharpDB/People'
 
 
