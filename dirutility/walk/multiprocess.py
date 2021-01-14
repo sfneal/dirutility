@@ -44,7 +44,7 @@ class Sprinter:
 
     def _get_root_files(self, directory):
         """Retrieve files within the root directory"""
-        if len(self.filepaths) is 0:
+        if len(self.filepaths) == 0:
             if self.filters:
                 root_files = [(directory, f) for f in os.listdir(directory)
                               if os.path.isfile(os.path.join(directory, f))
