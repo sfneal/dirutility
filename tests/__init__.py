@@ -1,12 +1,6 @@
-from platform import system
+import os
 
-
-if system() is 'Darwin':
-    directory = "/Users/Stephen/Sites/stephenneal.net/HTML"
-elif system() is 'Windows':
-    directory = "/Users/Stephen/Sites/stephenneal.net/HTML"
-else:
-    directory = "/Users/Stephen/Sites/stephenneal.net/HTML"
+directory = os.path.join(os.path.dirname(__file__), 'games')
 
 
 __all__ = ['directory']
