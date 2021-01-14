@@ -3,7 +3,7 @@ import shutil
 from dirutility.backup import ZipBackup
 
 
-directory = '/Volumes/Storage/SharpDB/games/20172018'
+directory = 'data/games'
 destination = os.path.join(os.path.dirname(__file__), 'data')
 if os.path.exists(destination):
     shutil.rmtree(destination)
