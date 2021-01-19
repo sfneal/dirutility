@@ -1,6 +1,10 @@
 # Directory Utilities
 
-[![GuardRails badge](https://badges.production.guardrails.io/mrstephenneal/dirutility.svg)](https://www.guardrails.io)
+[![Build Status](https://travis-ci.com/sfneal/dirutility.svg?branch=master)](https://travis-ci.com/sfneal/dirutility)
+[![PyPi version](https://img.shields.io/pypi/v/dirutility)](https://pypi.org/project/dirutility)
+[![PyPi Python support](https://img.shields.io/pypi/pyversions/dirutility)](https://pypi.org/project/dirutility)
+[![PyPi downloads per month](https://img.shields.io/pypi/dm/dirutility)](https://pypi.org/project/dirutility)
+[![PyPi license](https://img.shields.io/pypi/l/dirutility)](https://pypi.org/project/dirutility)
 
 dirutility is a Python package for generating an inventory of files within a directory tree.
 
