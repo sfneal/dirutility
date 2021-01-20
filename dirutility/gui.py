@@ -24,17 +24,21 @@ class WalkGUI:
         with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
             layout = [
                 [gui.Text('Results Saving Settings', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
-                # Source
-                [gui.Text('Destination Folder', size=(15, 1), auto_size_text=False), gui.InputText(desktop()),
-                 gui.FolderBrowse()],
+            # Source
+                [
+                    gui.Text('Destination Folder', size=(15, 1), auto_size_text=False),
+                    gui.InputText(desktop()),
+                    gui.FolderBrowse()
+                ],
 
-                # File types
+            # File types
                 [gui.Text('Select file types you would like to save output to.')],
                 [gui.Checkbox('CSV', default=True), gui.Checkbox('JSON')],
                 [_line()],
 
-                # Save results to file
-                [gui.Submit(), gui.Cancel()]]
+            # Save results to file
+                [gui.Submit(), gui.Cancel()]
+            ]
 
             (button, (values)) = form.LayoutAndShow(layout)
 
@@ -53,41 +57,56 @@ class WalkGUI:
         with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
             layout = [
                 [gui.Text('Directory Paths utility', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
-                # Source
-                [gui.Text('Source Folder', size=(15, 1), auto_size_text=False), gui.InputText('Source'),
-                 gui.FolderBrowse()],
+            # Source
+                [
+                    gui.Text('Source Folder', size=(15, 1), auto_size_text=False),
+                    gui.InputText('Source'),
+                    gui.FolderBrowse()
+                ],
 
-                # Parallel / Sequential
-                [gui.Text('Parallel or Sequential Processing. Larger directory trees are typically parsed faster '
-                          'using parallel processing.')],
-                [gui.Radio('Parallel Processing', "RADIO1"), gui.Radio('Sequential Processing', "RADIO1",
-                                                                       default=True)],
+            # Parallel / Sequential
+                [
+                    gui.Text('Parallel or Sequential Processing. Larger directory trees are typically parsed faster '
+                             'using parallel processing.')
+                ],
+                [
+                    gui.Radio('Parallel Processing', "RADIO1"),
+                    gui.Radio('Sequential Processing', "RADIO1", default=True)
+                ],
                 [_line()],
 
-                # Files and non-empty-folders
+            # Files and non-empty-folders
                 [gui.Text('Return files or folders, returning folders is useful for creating inventories.')],
-                [gui.Radio('Return Files', "RADIO2", default=True), gui.Radio('Return Non-Empty Directories',
-                                                                              "RADIO2")],
+                [
+                    gui.Radio('Return Files', "RADIO2", default=True),
+                    gui.Radio('Return Non-Empty Directories', "RADIO2")
+                ],
                 [_line()],
 
-                # max_level
+            # max_level
                 [gui.Text('Max Depth.... Max number of sub directory depths to traverse (starting directory is 0)')],
                 [gui.InputCombo(list(reversed(range(0, 13))), size=(20, 3))],
                 [_line()],
 
-                # Relative and absolute
-                [gui.Text('Relative or Absolute Paths.  Relative paths are saved relative to the starting directory. '
-                          'Absolute paths are saved as full paths.')],
-                [gui.Radio('Relative Paths', "RADIO3", default=True), gui.Radio('Absolute Paths', "RADIO3")],
+            # Relative and absolute
+                [
+                    gui.Text(
+                        'Relative or Absolute Paths.  Relative paths are saved relative to the starting directory. '
+                        'Absolute paths are saved as full paths.')
+                ],
+                [gui.Radio('Relative Paths', "RADIO3", default=True),
+                 gui.Radio('Absolute Paths', "RADIO3")],
                 [_line()],
 
-                # Topdown and output
-                [gui.Checkbox('Topdown Parse', default=True), gui.Checkbox('Live output results')],
+            # Topdown and output
+                [gui.Checkbox('Topdown Parse', default=True),
+                 gui.Checkbox('Live output results')],
                 [_line()],
 
-                # Save results to file
+            # Save results to file
                 [gui.Checkbox('Save Results to File', default=False)],
-                [gui.Submit(), gui.Cancel()]]
+                [gui.Submit(), gui.Cancel()]
+            ]
 
             (button, (values)) = form.LayoutAndShow(layout)
 
@@ -125,16 +144,22 @@ class BackupZipGUI:
         with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
             layout = [
                 [gui.Text('Zip Backup utility', size=(30, 1), font=("Helvetica", 30), text_color='blue')],
-                [gui.Text('Create a zip backup of a file or directory.', size=(50, 1), font=("Helvetica", 18),
-                          text_color='black')],
+                [
+                    gui.Text('Create a zip backup of a file or directory.',
+                             size=(50, 1),
+                             font=("Helvetica", 18),
+                             text_color='black')
+                ],
                 [gui.Text('-' * 200)],
 
-                # Source
-                [gui.Text('Select source folder', size=(20, 1), font=("Helvetica", 25), auto_size_text=False),
-                 gui.InputText('', key='source', font=("Helvetica", 20)),
-                 gui.FolderBrowse()],
-
-                [gui.Submit(), gui.Cancel()]]
+            # Source
+                [
+                    gui.Text('Select source folder', size=(20, 1), font=("Helvetica", 25), auto_size_text=False),
+                    gui.InputText('', key='source', font=("Helvetica", 20)),
+                    gui.FolderBrowse()
+                ],
+                [gui.Submit(), gui.Cancel()]
+            ]
 
             button, values = form.LayoutAndRead(layout)
             if button == 'Submit':
@@ -152,17 +177,21 @@ class CompareTreesGUI:
         with gui.FlexForm(self.title, auto_size_text=True, default_element_size=(40, 1)) as form:
             layout = [
                 [gui.Text('Results Saving Settings', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
-                # Source
-                [gui.Text('Destination Folder', size=(15, 1), auto_size_text=False), gui.InputText(desktop()),
-                 gui.FolderBrowse()],
+            # Source
+                [
+                    gui.Text('Destination Folder', size=(15, 1), auto_size_text=False),
+                    gui.InputText(desktop()),
+                    gui.FolderBrowse()
+                ],
 
-                # File types
+            # File types
                 [gui.Text('Select file types you would like to save output to.')],
                 [gui.Checkbox('CSV', default=True), gui.Checkbox('JSON')],
                 [_line()],
 
-                # Save results to file
-                [gui.Submit(), gui.Cancel()]]
+            # Save results to file
+                [gui.Submit(), gui.Cancel()]
+            ]
 
             (button, (values)) = form.LayoutAndShow(layout)
 
@@ -179,20 +208,24 @@ class CompareTreesGUI:
             layout = [
                 [gui.Text('Compare Trees utility', size=(30, 1), font=("Helvetica", 25), text_color='blue')],
 
-                # Source 1
-                [gui.Text('Select source #1 folder', size=(15, 1), auto_size_text=False),
-                 gui.InputText('Source'),
-                 gui.FolderBrowse()],
+            # Source 1
+                [
+                    gui.Text('Select source #1 folder', size=(15, 1), auto_size_text=False),
+                    gui.InputText('Source'),
+                    gui.FolderBrowse()
+                ],
 
-                # Source 2
-                [gui.Text('Select source #2 folder', size=(15, 1), auto_size_text=False),
-                 gui.InputText('Source'),
-                 gui.FolderBrowse()],
+            # Source 2
+                [
+                    gui.Text('Select source #2 folder', size=(15, 1), auto_size_text=False),
+                    gui.InputText('Source'),
+                    gui.FolderBrowse()
+                ],
 
-                # Save results to file
+            # Save results to file
                 [gui.Checkbox('Save Results to File', default=False)],
-
-                [gui.Submit(), gui.Cancel()]]
+                [gui.Submit(), gui.Cancel()]
+            ]
 
             (button, (values)) = form.LayoutAndShow(layout)
 
