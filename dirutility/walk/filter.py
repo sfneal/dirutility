@@ -2,7 +2,12 @@ import os
 
 
 class PathFilters:
-    def __init__(self, to_include=None, to_exclude=None, min_level=0, max_level=12, filters=None,
+    def __init__(self,
+                 to_include=None,
+                 to_exclude=None,
+                 min_level=0,
+                 max_level=12,
+                 filters=None,
                  non_empty_folders=None):
         self.to_include = to_include
         self.to_exclude = to_exclude

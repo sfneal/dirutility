@@ -4,7 +4,6 @@ from looptools import Timer
 from tests import directory
 from dirutility import Hash, DirPaths, PoolProcess
 
-
 FILE = os.path.join(os.path.dirname(__file__), 'document.pdf')
 DIRECTORY = directory
 

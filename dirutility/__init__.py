@@ -10,5 +10,7 @@ from dirutility.versions import Versions
 from dirutility.hash import Hash
 from dirutility.dump import TextDump
 
-__all__ = ['FlattenTree', 'CreateTree', 'move_files_to_folders', 'DirTree', 'DirPaths', 'desktop', 'ZipBackup', 'FTP',
-           'open_window', 'Permissions', 'pool_process', 'SystemCommand', 'PoolProcess', 'Versions', 'Hash', 'TextDump']
+__all__ = [
+    'FlattenTree', 'CreateTree', 'move_files_to_folders', 'DirTree', 'DirPaths', 'desktop', 'ZipBackup', 'FTP',
+    'open_window', 'Permissions', 'pool_process', 'SystemCommand', 'PoolProcess', 'Versions', 'Hash', 'TextDump'
+]

@@ -2,7 +2,6 @@ try:
     from hashlib import md5, sha256, sha1, blake2b, blake2s, sha512, shake_128
     from xxhash import xxh32, xxh64
 
-
     class _HashAlgos:
         def __init__(self, string):
             self.string = string
@@ -52,7 +51,6 @@ try:
         def _get_xxh64(self):
             """Hash a string using the xxh64 algo and return in hexdigested form."""
             return xxh64(self.string).hexdigest()
-
 
     class Hash(_HashAlgos):
         def __init__(self, string):
@@ -113,6 +111,7 @@ try:
             return self._xxh64
 
 except ImportError:
+
     class Hash:
         def __init__(self, *args, **kwargs):
             pass

@@ -1,7 +1,6 @@
 import os
 import stat
 
-
 PERMISSIONS = {
     # User permissions
     'user': {
@@ -90,8 +89,8 @@ def set_permissions_mode_from_octal(file_path, code):
     # Unpack permissions tuple
     user, group, other = tuple(str(code[-3:])) if len(str(code)) > 3 else tuple(str(code))
     user, group, other = int(user), int(group), int(other)
-    mode = get_permissions_mode(user,
-                                'user') & get_permissions_mode(group, 'group') & get_permissions_mode(other, 'other')
+    mode = get_permissions_mode(user, 'user') & get_permissions_mode(group, 'group') & get_permissions_mode(
+        other, 'other')
     os.chmod(file_path, mode)
 
 

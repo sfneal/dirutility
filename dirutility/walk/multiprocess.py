@@ -47,8 +47,7 @@ class Sprinter:
         if len(self.filepaths) == 0:
             if self.filters:
                 root_files = [(directory, f) for f in os.listdir(directory)
-                              if os.path.isfile(os.path.join(directory, f))
-                              and self.filters.validate(f)
+                              if os.path.isfile(os.path.join(directory, f)) and self.filters.validate(f)
                               and self.filters.get_level(f) == self.filters.max_level]
             else:
                 root_files = [(directory, f) for f in os.listdir(directory)
@@ -138,7 +137,7 @@ class Sprinter:
         self._printer('Multiprocess Walk')
         # Loop through directories in case there is more than one (1)
         for directory in self.directory:
-            self._get_root_files(directory)  # Add file within root directory if filepaths is empty
+            self._get_root_files(directory)    # Add file within root directory if filepaths is empty
             # acquire the list of paths
             first_level_dirs = next(os.walk(directory))[1]
             for path in first_level_dirs:

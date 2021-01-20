@@ -87,9 +87,7 @@ class PoolProcess:
         :param unit: Optional, progress bar units (default is 'it' for 'iteration')
         :return: A list of yielded values
         """
-        tqdm_args = dict(total=len(self._iterable),
-                         desc=desc,
-                         unit=unit)
+        tqdm_args = dict(total=len(self._iterable), desc=desc, unit=unit)
         with Pool(self.cpu_count) as pool:
             self._result = [v for v in tqdm(pool.imap_unordered(self._func, self._iterable), **tqdm_args)]
             pool.close()
