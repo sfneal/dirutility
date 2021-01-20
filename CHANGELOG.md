@@ -2,9 +2,11 @@
 
 All notable changes to `PillowImage` will be documented in this file
 
-## 1.1.10 - 2021-01-20
- - improve documentation & add PyPi automated deployment to Travis CI config
+## 0.7.19 - 2021-01-14
+ - optimize test suite by minimizing test file size
 
 
-## 1.1.11 - 2021-01-20
- - optimize PyPi automated deployment
+## 0.7.20 - 2021-01-20
+ - update doc 
+ - add PyPi deployment to Travis CI config
+ - add Scrutinizer & Style CI configs
