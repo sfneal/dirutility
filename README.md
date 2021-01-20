@@ -46,12 +46,12 @@ pip install dirutility
 GitHub distribution
 
 ```
-pip install git+git://github.com/mrstephenneal/dirutility.git
+pip install git+git://github.com/sfneal/dirutility.git
 ```
 or
 
 ```
-pip install git+https://github.com/mrstephenneal/dirutility.git
+pip install git+https://github.com/sfneal/dirutility.git
 ```
 
 ## Example Usage
@@ -84,12 +84,12 @@ dirs = DirPaths(root, to_include=['.psd', '.png'], to_exclude=['.dwg'])
 
 ## Built With
 
-* [looptools](https://github.com/mrstephenneal/looptools) - Logging output, timing processes and counting iterations.
+* [looptools](https://github.com/sfneal/looptools) - Logging output, timing processes and counting iterations.
 * [tqdm](https://github.com/tqdm/tqdm) - A fast, extensible progress bar for Python
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/mrstephenneal/dirutility/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/sfneal/dirutility/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
@@ -97,7 +97,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Stephen Neal** - *Initial work* - [StephenNeal](https://github.com/mrstephenneal)
+* **Stephen Neal** - *Initial work* - [StephenNeal](https://github.com/sfneal)
 
 ## License
 

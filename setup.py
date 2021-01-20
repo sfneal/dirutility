@@ -24,7 +24,7 @@ setup(
             'text-dump = dirutility.dump:main'
         ]
     },
-    url='https://github.com/mrstephenneal/dirutility',
+    url='https://github.com/sfneal/dirutility',
     license='MIT License',
     author='Stephen Neal',
     author_email='stephen@stephenneal.net',
