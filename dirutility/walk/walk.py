@@ -118,9 +118,21 @@ def pool_creation_date(path_list):
 
 
 class DirPaths:
-    def __init__(self, directory, full_paths=False, topdown=True, to_include=None, to_exclude=None,
-                 min_level=0, max_level=inf, filters=None, non_empty_folders=False, parallelize=False,
-                 pool_size=cpu_count(), console_output=False, console_stream=False, hash_files=False):
+    def __init__(self,
+                 directory,
+                 full_paths=False,
+                 topdown=True,
+                 to_include=None,
+                 to_exclude=None,
+                 min_level=0,
+                 max_level=inf,
+                 filters=None,
+                 non_empty_folders=False,
+                 parallelize=False,
+                 pool_size=cpu_count(),
+                 console_output=False,
+                 console_stream=False,
+                 hash_files=False):
         """
         This class generates a list of either files and or folders within a root directory.
 
@@ -208,9 +220,11 @@ class DirPaths:
         crawler() - Generates file path list using os.walk() in sequence
         """
         if self.parallelize:
-            self.filepaths = Sprinter(self.directory, self.filters, self.full_paths, self.pool_size, self._printer).sprinter()
+            self.filepaths = Sprinter(self.directory, self.filters, self.full_paths, self.pool_size,
+                                      self._printer).sprinter()
         else:
-            self.filepaths = Crawler(self.directory, self.filters, self.full_paths, self.topdown, self._printer).crawler()
+            self.filepaths = Crawler(self.directory, self.filters, self.full_paths, self.topdown,
+                                     self._printer).crawler()
         return self._get_filepaths()
 
     def files(self):
@@ -296,14 +310,19 @@ def gui():
     params = gui.parsing()
     parse = params['parse']
 
-    paths = DirPaths(parse['directory'], console_stream=parse['console_stream'], parallelize=parse['parallelize'],
-                     max_level=parse['max_level'], non_empty_folders=parse['non_empty_folders']).walk()
+    paths = DirPaths(parse['directory'],
+                     console_stream=parse['console_stream'],
+                     parallelize=parse['parallelize'],
+                     max_level=parse['max_level'],
+                     non_empty_folders=parse['non_empty_folders']).walk()
 
     if params['save']:
         from databasetools import CSVExport, DictTools
         save = params['save']
         if save['csv']:
-            CSVExport(list(paths), cols=['files'], file_path=save['directory'],
+            CSVExport(list(paths),
+                      cols=['files'],
+                      file_path=save['directory'],
                       file_name=os.path.basename(parse['directory']))
         if save['json']:
             DictTools(save['directory'], os.path.basename(parse['directory'])).save(list(paths))

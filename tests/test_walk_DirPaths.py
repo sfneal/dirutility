@@ -5,7 +5,6 @@ from dirutility.walk import DirPaths
 from dirutility.walk.walk import md5_hash
 from tests import *
 
-
 CONSOLE_STREAM = True
 
 

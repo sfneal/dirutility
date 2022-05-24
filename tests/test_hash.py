@@ -1,10 +1,11 @@
 import unittest
+import os
 from looptools import Timer
+from tests import directory
 from dirutility import Hash, DirPaths, PoolProcess
 
-
-FILE = 'data/Public Site - Services.pdf'
-DIRECTORY = '/Volumes/Storage/SharpDB/People'
+FILE = os.path.join(os.path.dirname(__file__), 'document.pdf')
+DIRECTORY = directory
 
 
 def get_paths():

@@ -56,7 +56,6 @@ class CreateTree:
     :param prefix: Prefix string to be concatenated with lowest level folder
     :param suffix: Suffix string to be concatenated with lowest level folder
     """
-
     def __init__(self, root, delimiter="_", prefix=None, suffix=None):
         self.files = DirPaths(root).files()
         self.delimiter = delimiter

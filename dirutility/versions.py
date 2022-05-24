@@ -13,10 +13,12 @@ class Versions:
         """Retrieve a dictionary of version part values from a list of versions."""
         if not self._versions:
             self._versions = {
-                tag: {'major': int(tag.split('.', 2)[0]),
-                      'minor': int(tag.split('.', 2)[1]),
-                      'patch': int(tag.split('.', 2)[2] if '-' not in tag else tag.split('.', 2)[2].split('-', 1)[0]),
-                      'cycle': '' if '-' not in tag else tag.split('.', 2)[2].split('-', 1)[1]}
+                tag: {
+                    'major': int(tag.split('.', 2)[0]),
+                    'minor': int(tag.split('.', 2)[1]),
+                    'patch': int(tag.split('.', 2)[2] if '-' not in tag else tag.split('.', 2)[2].split('-', 1)[0]),
+                    'cycle': '' if '-' not in tag else tag.split('.', 2)[2].split('-', 1)[1]
+                }
                 for tag in [s for s in self._versions_list if len(s) > 0 and not s.startswith('latest')]
             }
         return self._versions
@@ -24,9 +26,11 @@ class Versions:
     @property
     def sorted(self):
         """Sort a list of semver formatted versions by major, minor, path and cycle."""
-        sort = [k for k, v in sorted(self.versions.items(),
-                                     reverse=True,
-                                     key=lambda kv: (kv[1]['major'], kv[1]['minor'], kv[1]['patch'], kv[1]['cycle']))]
+        sort = [
+            k for k, v in sorted(self.versions.items(),
+                                 reverse=True,
+                                 key=lambda kv: (kv[1]['major'], kv[1]['minor'], kv[1]['patch'], kv[1]['cycle']))
+        ]
         if 'latest' in self._versions_list:
             sort.insert(0, 'latest')
         return sort
