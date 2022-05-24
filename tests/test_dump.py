@@ -5,6 +5,7 @@ from dirutility import TextDump
 
 
 class TestTextDumpWrite(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.data = 'dev.hpadesign.com beta.hpadesign.com dev.projects.hpadesign.com projects.hpadesign.com'

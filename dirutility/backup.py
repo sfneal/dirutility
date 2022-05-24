@@ -9,6 +9,7 @@ from dirutility.walk import DirPaths
 
 
 class ZipBackup:
+
     def __init__(self, source, destination=None, compress_level=0, delete_source=False, overwrite=False):
         """
         Create zip file backup of a directory.

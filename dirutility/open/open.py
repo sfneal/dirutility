@@ -35,8 +35,11 @@ def tempdir(absdirpath: str, prefix='', suffix='') -> TempDir:
 
 
 @contextmanager
-def tartempdir(
-        absfilepath: str, tempdir: TempDir, mode: str = 'w:gz', temp: bool = True, force: bool = True) -> TarFile:
+def tartempdir(absfilepath: str,
+               tempdir: TempDir,
+               mode: str = 'w:gz',
+               temp: bool = True,
+               force: bool = True) -> TarFile:
     """
     Create and return a tarfile directory.  This has the same
     behavior as mkdtemp then create tarfile from temp dir but can be used as a context manager.  For
@@ -87,9 +90,12 @@ def _create_archive(absfilepath, tempdir, mode) -> TarFile:
 
 
 @contextmanager
-def tardir(
-        absfilepath: str, mode: str = 'w:gz', temp: bool = True, force: bool = True, withdir: bool = False,
-        **paths: Dict[str, Union[dict, str, TextIO, None]]) -> TarFile:
+def tardir(absfilepath: str,
+           mode: str = 'w:gz',
+           temp: bool = True,
+           force: bool = True,
+           withdir: bool = False,
+           **paths: Dict[str, Union[dict, str, TextIO, None]]) -> TarFile:
     """
     Create and return a tarfile directory.  This has the same
     behavior as mkdtemp then create tarfile from temp dir but can be used as a context manager.  For

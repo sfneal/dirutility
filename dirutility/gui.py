@@ -8,6 +8,7 @@ def _line(char='_', width=100, size=(70, 1)):
 
 
 class WalkGUI:
+
     def __init__(self):
         """GUI window for inputing DirPaths parameters"""
         self.title = 'DirPaths'
@@ -134,6 +135,7 @@ class WalkGUI:
 
 
 class BackupZipGUI:
+
     def __init__(self):
         """GUI window for saving zip backups"""
         self.title = 'ZipBackup'
@@ -169,6 +171,7 @@ class BackupZipGUI:
 
 
 class CompareTreesGUI:
+
     def __init__(self):
         self.title = 'CompareTrees'
         self.params = {}

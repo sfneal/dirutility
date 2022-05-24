@@ -34,6 +34,7 @@ def hash_file_sha256(path):
 
 
 class TestHashFilesRecursive(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.paths = get_paths()
@@ -62,6 +63,7 @@ class TestHashFilesRecursive(unittest.TestCase):
 
 
 class TestHashFile(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         with open(FILE, 'rb') as fp:
@@ -110,6 +112,7 @@ class TestHashFile(unittest.TestCase):
 
 
 class TestHashString(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.hash = Hash(b'Nobody inspects the spammish repetition')

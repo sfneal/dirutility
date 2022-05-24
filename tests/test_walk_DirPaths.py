@@ -9,6 +9,7 @@ CONSOLE_STREAM = True
 
 
 class TestWalk(unittest.TestCase):
+
     def test_DirPaths_multiprocess(self):
         paths = DirPaths(directory, full_paths=True, parallelize=True, console_stream=CONSOLE_STREAM).walk()
         for i in paths:

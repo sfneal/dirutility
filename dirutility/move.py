@@ -8,6 +8,7 @@ from dirutility.walk import DirPaths
 
 
 class FlattenTree:
+
     def __init__(self, directory, target='root'):
         """
         Loops through parent folders in a root directory and moves child files out of sub folders and into parent folder
@@ -56,6 +57,7 @@ class CreateTree:
     :param prefix: Prefix string to be concatenated with lowest level folder
     :param suffix: Suffix string to be concatenated with lowest level folder
     """
+
     def __init__(self, root, delimiter="_", prefix=None, suffix=None):
         self.files = DirPaths(root).files()
         self.delimiter = delimiter

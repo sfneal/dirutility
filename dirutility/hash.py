@@ -3,6 +3,7 @@ try:
     from xxhash import xxh32, xxh64
 
     class _HashAlgos:
+
         def __init__(self, string):
             self.string = string
 
@@ -53,6 +54,7 @@ try:
             return xxh64(self.string).hexdigest()
 
     class Hash(_HashAlgos):
+
         def __init__(self, string):
             super(Hash, self).__init__(string)
 
@@ -113,5 +115,6 @@ try:
 except ImportError:
 
     class Hash:
+
         def __init__(self, *args, **kwargs):
             pass

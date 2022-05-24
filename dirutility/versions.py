@@ -3,6 +3,7 @@ import re
 
 
 class Versions:
+
     def __init__(self, versions_list):
         """Sort and manipulate list of semver formatting versions."""
         self._versions_list = versions_list

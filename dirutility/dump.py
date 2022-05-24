@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 
 
 class TextDump:
+
     def __init__(self, file_path, verbose=0):
         self.file_path = file_path
         self._verbose = verbose

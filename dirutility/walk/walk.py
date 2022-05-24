@@ -18,6 +18,7 @@ from dirutility.walk.sequential import Crawler
 
 
 class Printer:
+
     def __init__(self, console_output, console_stream):
         """Printer function initialized with classes. Used for optional printing"""
         self.console_output = console_output
@@ -118,6 +119,7 @@ def pool_creation_date(path_list):
 
 
 class DirPaths:
+
     def __init__(self,
                  directory,
                  full_paths=False,
@@ -250,6 +252,7 @@ class DirPaths:
 
 
 class DirTree:
+
     def __init__(self, root, branches=None):
         """
         Generate a tree dictionary of the contents of a root directory.
