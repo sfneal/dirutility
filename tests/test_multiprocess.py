@@ -17,6 +17,7 @@ EXPECTED = set([a * a for a in range(100)])
 
 
 class TestMultiprocessFunc(unittest.TestCase):
+
     def setUp(self):
         self.result = None
 
@@ -38,6 +39,7 @@ class TestMultiprocessFunc(unittest.TestCase):
 
 
 class TestMultiprocessClass(unittest.TestCase):
+
     def setUp(self):
         self.result = None
 

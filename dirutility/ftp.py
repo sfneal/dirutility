@@ -4,6 +4,7 @@ import os
 
 
 class FTP:
+
     def __init__(self, host, username, password, port=21):
         self._session = self.connect(host, port, username, password)
 

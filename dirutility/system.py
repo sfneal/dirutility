@@ -3,6 +3,7 @@ from subprocess import Popen, PIPE
 
 
 class SystemCommand:
+
     def __init__(self, command, decode_output=True, immediate_execution=True):
         """
         Execute a system command.

@@ -4,6 +4,7 @@ from looptools import Counter
 
 
 class Crawler:
+
     def __init__(self, directory, filters, full_paths, topown, _printer):
         """Sub class of DirPaths used for sequential directory parsing"""
         self.directory = directory

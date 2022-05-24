@@ -6,6 +6,7 @@ from dirutility.open.open import tardir
 
 
 class TestArchive(unittest.TestCase):
+
     def test_tardir(self):
         tempfile = '/Users/Shared/kasdkfasdf.txt'
         with open(tempfile, 'w') as wfd:
@@ -14,9 +15,7 @@ class TestArchive(unittest.TestCase):
             paths = {
                 'abc': 'abc abc abc',
                 'kbs': {
-                    'haha': {
-
-                    },
+                    'haha': {},
                     'yoyo': {
                         'haha': rfd1
                     }
@@ -32,9 +31,7 @@ class TestArchive(unittest.TestCase):
             paths = {
                 'abc': 'abc abc abc',
                 'kbs': {
-                    'haha': {
-
-                    },
+                    'haha': {},
                     'yoyo': {
                         'haha': rfd1
                     }

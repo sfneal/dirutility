@@ -2,6 +2,7 @@ import os
 
 
 class PathFilters:
+
     def __init__(self,
                  to_include=None,
                  to_exclude=None,

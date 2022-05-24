@@ -10,6 +10,7 @@ from dirutility.error import InvalidFileNameError, InvalidDirStructureError
 
 
 class DirStructure:
+
     def __init__(self, **paths: Dict[str, Union[dict, str, TextIO, None]]):
         self._content = {}
         for pathname, _c in paths.items():
@@ -60,6 +61,7 @@ class DirStructure:
 
 
 class DirBase(metaclass=abc.ABCMeta):
+
     def __init__(self, dirpath: str, structure: Union[DirStructure, None] = None):
         self._dirpath = dirpath
         self._structure = structure
@@ -92,6 +94,7 @@ class TempDir(DirBase):
 
 
 class TarFile(object):
+
     def __init__(self, filepath: str, tempdir: TempDir, mode: str = 'w:gz'):
 
         self._mode = mode.strip()
@@ -138,6 +141,7 @@ class TarFile(object):
 
 
 class ZipFile(TarFile):
+
     def __init__(self, filepath: str, tempdir: TempDir, mode: str = 'w:zip'):
         super(ZipFile, self).__init__(filepath, tempdir, mode)
 
@@ -148,14 +152,16 @@ class ZipFile(TarFile):
                 for file in files:
                     _fp = os.path.join(root, file)
                     if withdir:
-                        zip_file.write(_fp, arcname='{}/{}'.format(
-                            self.filename(with_suffix=False), _fp.replace(self._tempdir.dirpath, '')))
+                        zip_file.write(_fp,
+                                       arcname='{}/{}'.format(self.filename(with_suffix=False),
+                                                              _fp.replace(self._tempdir.dirpath, '')))
                     else:
                         zip_file.write(_fp, arcname=_fp.replace(self._tempdir.dirpath, ''))
 
             else:
                 if withdir:
-                    zip_file.write(root, arcname='{}/{}'.format(
-                        self.filename(with_suffix=False), root.replace(self._tempdir.dirpath, '')))
+                    zip_file.write(root,
+                                   arcname='{}/{}'.format(self.filename(with_suffix=False),
+                                                          root.replace(self._tempdir.dirpath, '')))
                 else:
                     zip_file.write(root, arcname=root.replace(self._tempdir.dirpath, ''))

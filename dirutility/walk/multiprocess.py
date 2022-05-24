@@ -4,6 +4,7 @@ from multiprocessing.pool import Pool
 
 
 class Sprinter:
+
     def __init__(self, directory, filters, full_paths, pool_size, _printer):
         """DirPaths sub class for directory parsing using parallel processing."""
         self.directory = directory
