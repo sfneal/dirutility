@@ -48,4 +48,6 @@ class TestArchive(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    # unittest.main()
+    sleep(1)
+    # todo: add files to repo so this test can be run
