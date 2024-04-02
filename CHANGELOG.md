@@ -10,3 +10,7 @@ All notable changes to `PillowImage` will be documented in this file
  - update doc 
  - add PyPi deployment to Travis CI config
  - add Scrutinizer & Style CI configs
+
+
+## 0.8.0 - 2024-04-02 (unreleased)
+ - add GitHub actions for running test suite
