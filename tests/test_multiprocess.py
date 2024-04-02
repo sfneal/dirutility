@@ -61,5 +61,4 @@ class TestMultiprocessClass(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    # unittest.main()
-    sleep(1)
+    unittest.main()
